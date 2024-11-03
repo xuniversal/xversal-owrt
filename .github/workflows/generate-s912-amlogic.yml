@@ -344,7 +344,7 @@ jobs:
           cd ${{ env.PACKAGED_OUTPUTPATH }}
           for file in *.img.gz; do mv "$file" Action_$(basename "$file" .img.gz)$( echo "_$TUNNEL" )$([ "$REVISION_TAG" == "true" ] && echo _rev).img.gz; done
           for file in *rootfs.tar.gz; do mv "$file" Action_$(basename "$file" .tar.gz)$( echo "_$TUNNEL" )$([ "$REVISION_TAG" == "true" ] && echo _rev).tar.gz; done
-          if wget -q https://github.com/edisigabut/action-owrt/releases/download/amlogic-${{ env.openwrt_board }}-${{ env.BASE }}-${{ env.BRANCH }}-${{ env.DATEMONTH }}/sha256sums; then
+          if wget -q https://github.com/xuniversal/xversal-owrt/releases/download/amlogic-${{ env.openwrt_board }}-${{ env.BASE }}-${{ env.BRANCH }}-${{ env.DATEMONTH }}/sha256sums; then
              rm -r *.sha && sha256sum *.gz >> sha256sums
           else
              rm -r *.sha && sha256sum *.gz > sha256sums
@@ -369,7 +369,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         if: ${{ steps.prep_upload.outputs.status }} == 'success' && !cancelled()
         with:
-          repo_token: ${{ secrets.OWRT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
           file: ${{ env.PACKAGED_OUTPUTPATH }}/*
           asset_name: ${{ github.event.repository.name }}-${{ github.sha }}
@@ -378,13 +378,13 @@ jobs:
           overwrite: true
           prerelease: ${{ env.PRE_RELEASE }}
           body: |
-            ![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/edisigabut/action-owrt/${{ env.RELEASE_TAG }}/total?style=for-the-badge&logo=Openwrt)
+            ![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/xuniversal/xversal-owrt/${{ env.RELEASE_TAG }}/total?style=for-the-badge&logo=Openwrt)
             ### Action ${{ env.BASE }}-${{ env.BRANCH }} Image information
             Build date: ${{ env.DATETIME }}
             
             ${{ steps.changelog.outputs.CHANGELOG }}
             
-            See [here](https://github.com/edisigabut/action-owrt?tab=readme-ov-file#firmware-details) for more detail feature and other information.
+            See [here](https://github.com/xuniversal/xversal-owrt?tab=readme-ov-file#firmware-details) for more detail feature and other information.
             - Default IP: 192.168.1.1
             - Default username: root
             - Default password: root
