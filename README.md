@@ -1,6 +1,6 @@
 # OpenWrt and ImmortalWrt
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/edisigabut/action-owrt/total.svg?style=for-the-badge&logo=Openwrt)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/xuniversal/xversal-owrt/total.svg?style=for-the-badge&logo=Openwrt)
 
 ### What's this?
 This is a openwrt toolchain called Image Builder to build a pre-compiled image to ready one firmware. You can customize your own packages and custom files that suitable for you. 
