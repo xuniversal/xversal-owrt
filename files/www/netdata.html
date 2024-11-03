@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Network Monitor</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Add dashboard.js here! -->
+	<script type='text/javascript'>
+		var dashboard = '<script type="text/javascript" src="' + window.location.protocol + '//' + window.location.host + ':19999/dashboard.js"><\/script>';
+		document.write(dashboard);
+	</script>
+	<script>
+		var netdataTheme = 'white'; // or 'slate' for the dark one
+		var netdataPrepCallback = function() {
+		// code here
+		// remove all css files - netdata will not load any now
+		NETDATA.requiredCSS = [];
+		};
+	</script>
+<style>.wrap{max-width: 1280px; margin: 0 auto;}h3{margin-bottom: 30px; text-align: center;}.charts{display: flex; flex-flow: row wrap; justify-content: space-around;}.charts > div{margin-bottom: 6rem; position: relative;}</style>
+<style>.wrap{max-width: 1200px; margin: 0 auto;}h3{margin-bottom: 30px; text-align: center;}.charts{display: flex; flex-flow: row wrap; justify-content: space-around;}.charts > div{margin-bottom: 6rem; position: relative;}
+		.btn {
+			background-color: #2ea611;
+			border: none;
+			color: white;
+			padding: 10px 15px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 15px;
+			margin: 4px 2px;
+			cursor: pointer;
+		}
+</style>
+
+<!-->
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  vertical-align: middle;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.container {
+  position: relative;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Add a pointer when hovering over the thumbnail images */
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: relative;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+</style>
+
+</head>
+<body>
+  <main class="wrap">
+    <h3>			<script type='text/javascript'>
+				var dashboard = '<a href="' + window.location.protocol + '//' + window.location.host + ':19999" target="_blank" class="btn">NetData Dashboard</a>';
+				document.write(dashboard);
+			</script></h3>
+<center>
+	   <div data-netdata="net.eth2"
+			data-title="Modem_a"
+			data-chart-library="gauge"
+			data-after="-150"
+			data-width="28%" 
+			data-points="720"
+			data-gauge-generate-gradient="[0,5,10,60,100]"
+			data-gauge-gradient-percent-color-0="#6e0a04"
+			data-gauge-gradient-percent-color-5="#6e0a04"
+			data-gauge-gradient-percent-color-10="#bf7a11"
+			data-gauge-gradient-percent-color-60="#decb00"
+			data-gauge-gradient-percent-color-100="#2ea611"
+			data-colors="#002b49">
+	   </div>
+	   <div data-netdata="net.br-lan"
+			data-title="Lan"
+			data-chart-library="easypiechart"
+			data-after="-150"
+			data-width="18%" 
+			data-points="720"
+			data-colors="#002b49">
+	   </div>
+	   <div data-netdata="net.eth3"
+			data-title="Modem_b"
+			data-chart-library="gauge"
+			data-after="-150"
+			data-width="28%" 
+			data-points="720"
+			data-gauge-generate-gradient="[0,5,10,60,100]"
+			data-gauge-gradient-percent-color-0="#6e0a04"
+			data-gauge-gradient-percent-color-5="#6e0a04"
+			data-gauge-gradient-percent-color-10="#bf7a11"
+			data-gauge-gradient-percent-color-60="#decb00"
+			data-gauge-gradient-percent-color-100="#2ea611"
+			data-colors="#002b49">
+	   </div>
+	  <br><br>
+	   <div data-netdata="system.net" 
+			data-dimensions="received" 
+			data-chart-library="easypiechart" 
+			data-title="Net Inbound" 
+			data-width="15%" 
+			data-points="720" 
+			data-common-units="system.net.mainhead"
+			data-colors="#002b49">
+	   </div>
+	   <div data-netdata="system.cpu" 
+			data-chart-library="easypiechart" 
+			data-title="CPU" 
+			data-units="%" 
+			data-easypiechart-max-value="100" 
+			data-width="15%" 
+			data-points="720" 
+			data-colors="#002b49">
+	   </div>
+	   <div data-netdata="system.ram" 
+			data-dimensions="used|buffers|active|wired" 
+			data-append-options="percentage" 
+			data-chart-library="easypiechart" 
+			data-title="Used RAM" 
+			data-units="%" 
+			data-easypiechart-max-value="100" 
+			data-width="15%" 
+			data-points="720"
+			data-colors="#002b49">
+	   </div> 
+	   <div data-netdata="system.net" 
+			data-dimensions="sent" 
+			data-chart-library="easypiechart" 
+			data-title="Net Outbound" 
+			data-width="15%" 
+			data-points="720" 
+			data-common-units="system.net.mainhead"
+			data-colors="#002b49">
+	   </div>
+</main>
+<center>
+<div id="findipwidget"></div><div class="findiplink" id="findipurl"><a href="http://www.find-ip.net/"</a></div><script defer src="https://api.find-ip.net/widget.js?width=400&region=0&city=0&language=0&browser=0&system=0&"></script>
+			<br>
+			<!-- Another Buttons -->
+			<a href="https://atsameip.intercode.ca/whois?myip&igm" class="btn" target="_blank">Check Your IP Address Completely</a>
+			<a href="https://check-host.net/" class="btn" target="_blank">Check Host Net</a>
+			<a href="https://speed.cloudflare.com/" class="btn" target="_blank">Speedtest Cloudflare</a>
+			<br><br>
+
+<div class="container">
+  <div class="mySlides">
+    <div class="numbertext">1 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_s.png" style="width:80%">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">2 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_5.png" style="width:80%">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">3 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_h.png" style="width:80%">
+  </div>
+    
+  <div class="mySlides">
+    <div class="numbertext">4 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_d.png" style="width:80%">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">5 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_m.png" style="width:80%">
+  </div>
+    
+  <div class="mySlides">
+    <div class="numbertext">6 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_y.png" style="width:80%">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">7 / 7</div>
+    <img src="/vnstati/br-lan_vnstat_t.png" style="width:80%">
+  </div>
+
+	  <br><br>
+
+  <a class="prev" onclick="plusSlides(-1)">❮</a>
+  <a class="next" onclick="plusSlides(1)">❯</a>
+
+	  <br><br>
+
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_s.png" style="width:60%" onclick="currentSlide(1)" alt="Summary">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_5.png" style="width:60%" onclick="currentSlide(2)" alt="5 Minute">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_h.png" style="width:60%" onclick="currentSlide(3)" alt="Hourly">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_d.png" style="width:60%" onclick="currentSlide(4)" alt="Daily">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_m.png" style="width:60%" onclick="currentSlide(5)" alt="Monthly">
+    </div>    
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_y.png" style="width:60%" onclick="currentSlide(6)" alt="Yearly">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="/vnstati/br-lan_vnstat_t.png" style="width:60%" onclick="currentSlide(7)" alt="Top 10">
+    </div>
+  </div>
+</div>
+	  <br><br>
+
+<script>
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("demo");
+  let captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
+</body>
+</html>

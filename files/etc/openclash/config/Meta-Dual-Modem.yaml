@@ -1,0 +1,213 @@
+---
+# =================META-RULE==================
+dns:
+  nameserver:
+  - https://dns.adguard.com/dns-query
+  - https://dns-google.com/dns-query
+  - tls://dns.adguard.com
+  - tls://dns-google.com/
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  listen: 127.0.0.1:7874
+  fake-ip-filter:
+  - "+.*"
+  default-nameserver:
+  - 8.8.8.8
+  - 8.8.4.4
+redir-port: 7892
+tproxy-port: 7895
+port: 7890
+socks-port: 7891
+mixed-port: 7893
+mode: rule
+log-level: info
+allow-lan: true
+external-controller: 0.0.0.0:9090
+secret: '123456'
+bind-address: "*"
+external-ui: "/usr/share/openclash/ui"
+ipv6: false
+tun:
+  enable: true
+  stack: system
+  device: utun
+  auto-route: false
+  auto-detect-interface: false
+  dns-hijack:
+  - tcp://any:53
+profile:
+  store-selected: true
+  store-fake-ip: true
+unified-delay: true
+# ================= PG ==================
+proxies:
+proxy-providers:
+  SettingAkun:
+    type: file
+    path: "./proxy_provider/interface.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 10
+  SettingAkun2:
+    type: file
+    path: "./proxy_provider/interface-2.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 10
+# ================= PG ==================
+proxy-groups:
+- name: SPEEDTEST ⚡
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SettingAkun
+  - SettingAkun2
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+  proxies:
+  - ISP-LB
+  - DIRECT-1
+  - DIRECT-2
+
+- name: UMUM 🌏
+  type: select
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+  - DIRECT-1
+  - DIRECT-2
+
+- name: GAME 🎮
+  type: select
+  disable-udp: false
+  use:
+  - SettingAkun2
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+  - DIRECT-1
+  - DIRECT-2
+
+- name: NSFW ❌
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+- name: IKLAN 🛡
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+####### Silahkan ubah interface sesuai nama masing-masing #######
+- name: ISP-1
+  type: select
+  disable-udp: false
+  proxies:
+  - FALLBACK-1
+  - DIRECT-1
+  use:
+  - SettingAkun
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: ISP-2
+  type: select
+  disable-udp: false
+  proxies:
+  - FALLBACK-2
+  - DIRECT-2
+  use:
+  - SettingAkun2
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: FALLBACK-1
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SettingAkun
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: FALLBACK-2
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SettingAkun2
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: ISP-LB
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - ISP-1
+  - ISP-2
+
+- name: DIRECT-1
+  type: select
+  disable-udp: false
+  interface-name: eth1
+  proxies:
+  - DIRECT
+  
+- name: DIRECT-2
+  type: select
+  disable-udp: false
+  interface-name: eth2
+  proxies:
+  - DIRECT
+
+######################################  
+# ================= RP  ==================
+rule-providers:
+#iklan&18+
+  Nsfw:
+    type: file
+    behavior: domain
+    path: "./rule_provider/rule_nsfw.yaml"
+  Speed:
+    type: file
+    behavior: classical
+    path: "./rule_provider/rule_speedtest.yaml"  
+  oisd_big:
+    type: http
+    behavior: classical
+    path: "./rule_provider/oisd_big.yaml"
+    url: https://raw.githubusercontent.com/hillz2/openclash_adblock/main/oisd_big.yaml
+    interval: 28800 # Update rules every 8 hours
+    
+# ================= RULES  ==================
+rules:
+# AdBlock
+- RULE-SET,oisd_big,IKLAN 🛡
+# Etc
+- RULE-SET,Nsfw,NSFW ❌
+- RULE-SET,Speed,SPEEDTEST ⚡
+- NETWORK,TCP,UMUM 🌏
+- NETWORK,UDP,GAME 🎮
