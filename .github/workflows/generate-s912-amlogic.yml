@@ -367,12 +367,16 @@ jobs:
 
       - name: Upload Firmware to Release
         uses: svenstaro/upload-release-action@v2
+        if: ${{ steps.prep_upload.outputs.status }} == 'success' && !cancelled()
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./artifact/*
-          tag: ${{ inputs.devices }}
+          repo_token: ${{ secrets.OWRT_TOKEN }}
           file_glob: true
+          file: ${{ env.PACKAGED_OUTPUTPATH }}/*
+          asset_name: ${{ github.event.repository.name }}-${{ github.sha }}
+          tag: ${{ env.RELEASE_TAG }}
+          release_name: ${{ env.RELEASE_TAG }}
           overwrite: true
+          prerelease: ${{ env.PRE_RELEASE }}
           body: |
             ![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/xuniversal/xversal-owrt/${{ env.RELEASE_TAG }}/total?style=for-the-badge&logo=Openwrt)
             ### Action ${{ env.BASE }}-${{ env.BRANCH }} Image information
