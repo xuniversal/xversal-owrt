@@ -18,7 +18,7 @@ on:
       release_branch:
         description: "Select the release branch:"
         required: true
-        default: "openwrt:23.05.4"
+        default: "openwrt:23.05.5"
         type: choice
         options:
           - openwrt:21.02.7
@@ -31,7 +31,7 @@ on:
       target:
         description: "Select device board"
         required: false
-        default: "h96-pro-plus"
+        default: "hg680p"
         type: choice
         options:
           - all
