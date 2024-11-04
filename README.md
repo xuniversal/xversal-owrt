@@ -42,8 +42,7 @@ Login info
 - TinyFm file manager,
 - Internet Detector and Lite Watchdog,
 - vnstat2 and Nlbwmon for Bandwith Monitoring,
-- Argon, RTA and Alpha Theme with some cool custom login image,
+- Argon mand Alpha Theme with some cool custom login image,
 - 3ginfo lite and Modeminfo, sms-tool, and other modem support app,
-- OLED Display support (only Raspberrry Pi 4B tested),
 - etc~
 
