@@ -365,17 +365,14 @@ jobs:
           r="${r//$'\r'/'%0D'}"  
           echo "CHANGELOG=$r" >> $GITHUB_OUTPUT
 
-      - name: Upload Firmware to Release
+     - name: Upload release asset
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./artifact/*
+          tag: ${{ inputs.devices }}
           file_glob: true
-          file: ${{ env.PACKAGED_OUTPUTPATH }}/*
-          asset_name: ${{ github.event.repository.name }}-${{ github.sha }}
-          tag: ${{ env.RELEASE_TAG }}
-          release_name: ${{ env.RELEASE_TAG }}
           overwrite: true
-          prerelease: false
           body: |
             ![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/xuniversal/xversal-owrt/${{ env.RELEASE_TAG }}/total?style=for-the-badge&logo=Openwrt)
             ### Action ${{ env.BASE }}-${{ env.BRANCH }} Image information
