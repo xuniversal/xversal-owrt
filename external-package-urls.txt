@@ -52,6 +52,7 @@ amlogic https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.
 all-all https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/luci-app-quickstart_1.0.2-20230817_all.ipk
 arm64 https://dl.openwrt.ai/packages-23.05/aarch64_cortex-a72/packages/docker-compose_2.18.1-1_aarch64_cortex-a72.ipk
 #
+#
 amlogic https://github.com/zonevona/my-opkg-repo/raw/main/aarch64_generic/mihomo_2024.10.20~3e966e82-r3_aarch64_generic.ipk
 amlogic https://github.com/zonevona/my-opkg-repo/raw/main/aarch64_generic/luci-app-mihomo_1.9.2-1_all.ipk
 #
