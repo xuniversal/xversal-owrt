@@ -40,6 +40,9 @@ elif [ "$2" == "neko-passwall" ]; then
 elif [ "$2" == "openclash-passwall-neko" ]; then
     PACKAGES+=" $([ "$(echo "$BRANCH" | cut -d'.' -f1)" == "21" ] && echo "$OPENCLASH_FW3" || echo "$OPENCLASH_FW4") $NEKO $PASSWALL"
 fi
+
+# 
+PACKAGES+=" mihomo luci-app-mihomo tailscale luci-app-tailscale"
 # luci-app-passwall2
 # Adguardhome
 PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools"
@@ -97,7 +100,7 @@ elif [ "$ARCH_2" == "x86_64" ]; then
 fi
 
 if [ "$TYPE" == "AMLOGIC" ]; then
-    PACKAGES+=" luci-app-amlogic ath10k-board-qca9377 ath10k-firmware-qca9377 ath9k-htc-firmware btrfs-progs hostapd hostapd-utils kmod-ath kmod-ath9k kmod-ath9k-common kmod-ath9k-htc kmod-cfg80211 kmod-crypto-acompress kmod-crypto-crc32c kmod-crypto-hash kmod-fs-btrfs kmod-mac80211 wireless-tools wpa-cli wpa-supplicant mihomo luci-app-mihomo"
+    PACKAGES+=" luci-app-amlogic ath10k-board-qca9377 ath10k-firmware-qca9377 ath9k-htc-firmware btrfs-progs hostapd hostapd-utils kmod-ath kmod-ath9k kmod-ath9k-common kmod-ath9k-htc kmod-cfg80211 kmod-crypto-acompress kmod-crypto-crc32c kmod-crypto-hash kmod-fs-btrfs kmod-mac80211 wireless-tools wpa-cli wpa-supplicant"
     EXCLUDED+=" -procd-ujail"
 fi
 
