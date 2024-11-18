@@ -10,7 +10,7 @@ PACKAGES=""
 # Modem and UsbLAN Driver
 PACKAGES+=" kmod-usb-net-rtl8150 kmod-usb-net-rtl8152 kmod-usb-net-asix kmod-usb-net-asix-ax88179"
 PACKAGES+=" kmod-mii kmod-usb-net kmod-usb-wdm kmod-usb-net-qmi-wwan uqmi luci-proto-qmi \
-kmod-usb-net-cdc-ether kmod-usb-serial-option kmod-usb-serial kmod-usb-serial-wwan qmi-utils \
+kmod-usb-net-cdc-ether kmod-usb-serial-option kmod-usb-serial kmod-usb-serial-wwan qmi-utils kmod-nvme \
 kmod-usb-serial-qualcomm kmod-usb-acm kmod-usb-net-cdc-ncm kmod-usb-net-cdc-mbim umbim \
 modemmanager luci-proto-modemmanager libmbim libqmi usbutils luci-proto-mbim luci-proto-ncm \
 kmod-usb-net-huawei-cdc-ncm kmod-usb-net-cdc-ether kmod-usb-net-rndis kmod-usb-net-sierrawireless kmod-usb-ohci kmod-usb-serial-sierrawireless \
@@ -96,7 +96,7 @@ fi
 if [ "$1" == "rpi-4" ]; then
     misc+=" kmod-i2c-bcm2835 i2c-tools kmod-i2c-core kmod-i2c-gpio luci-app-oled"
 elif [ "$ARCH_2" == "x86_64" ]; then
-    misc+=" kmod-iwlwifi iw-full pciutils kmod-nvme"
+    misc+=" kmod-iwlwifi iw-full pciutils"
 fi
 
 if [ "$TYPE" == "AMLOGIC" ]; then
