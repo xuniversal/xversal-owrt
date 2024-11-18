@@ -25,24 +25,6 @@ Custom files or configuration on "files" folder.
 Please read instruction given.
 
 ### Firmware details
-
 Login info
 * 192.168.9.1 | user: root | password: root
 * SSID: OpenWRT or Openwrt_5GHz | password: openwrt2024
-
-- Modemmanager protocol for connecting 4g/5g modems (tested using Dell DW5821e Snapdragon X20 LTE),
-- Modemmanager with auto-reconnect,
-- Automatically expand root partition and filesystem to available free space! (Please be patient because the initial boot process takes a little longer to extend the disk and it also requires two reboot attempts),
-- AdGuard Home installed (enable using "adguardhome enable" command on terminal, and "adguardhome disable" to disable),
-- Openclash with latest beta release and latest MetaCubeX Mihomo core,
-- Passwall as alternate tunneling app,
-- DOCKER installed, ready to run container,
-- Aria2 download server,
-- SAMBA4 server for sharing storage,
-- TinyFm file manager,
-- Internet Detector and Lite Watchdog,
-- vnstat2 and Nlbwmon for Bandwith Monitoring,
-- Argon mand Alpha Theme with some cool custom login image,
-- 3ginfo lite and Modeminfo, sms-tool, and other modem support app,
-- etc~
-
