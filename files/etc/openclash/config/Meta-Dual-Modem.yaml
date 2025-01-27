@@ -10,7 +10,7 @@ dns:
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  listen: 127.0.0.1:7874
+  listen: 0.0.0.0:7874
   fake-ip-filter:
   - "+.*"
   default-nameserver:
@@ -50,46 +50,54 @@ proxy-providers:
     health-check:
       enable: true
       url: http://www.gstatic.com/generate_204
-      interval: 10
+      interval: 300
   SettingAkun2:
     type: file
     path: "./proxy_provider/interface-2.yaml"
     health-check:
       enable: true
       url: http://www.gstatic.com/generate_204
-      interval: 10
+      interval: 300
+  SettingDirect:
+    type: file
+    path: "./proxy_provider/direct.yaml"
+    health-check:
+      enable: true
+      url: https://www.speedtest.net/cdn-cgi/trace
+      interval: 300
+
 # ================= PG ==================
 proxy-groups:
 - name: SPEEDTEST ⚡
   type: select
+  icon: https://img.icons8.com/?size=100&id=15178&format=png&color=000000
   strategy: round-robin
   disable-udp: false
   use:
   - SettingAkun
   - SettingAkun2
+  - SettingDirect
   url: http://www.gstatic.com/generate_204
   interval: 10
   proxies:
   - ISP-LB
-  - DIRECT-1
-  - DIRECT-2
 
 - name: UMUM 🌏
   type: select
+  icon: https://img.icons8.com/?size=100&id=c84A8yTomT5p&format=png&color=000000
   disable-udp: false
   proxies:
   - REJECT
   - ISP-1
   - ISP-2
   - ISP-LB
-  - DIRECT-1
-  - DIRECT-2
 
 - name: GAME 🎮
   type: select
+  icon: https://img.icons8.com/?size=100&id=11907&format=png&color=000000
   disable-udp: false
   use:
-  - SettingAkun2
+  - SettingDirect
   url: http://www.gstatic.com/generate_204
   interval: 10
   proxies:
@@ -97,11 +105,10 @@ proxy-groups:
   - ISP-1
   - ISP-2
   - ISP-LB
-  - DIRECT-1
-  - DIRECT-2
 
 - name: NSFW ❌
   type: select
+  icon: https://img.icons8.com/?size=100&id=eUfvXepuZG4g&format=png&color=000000
   strategy: round-robin
   disable-udp: false
   proxies:
@@ -112,6 +119,7 @@ proxy-groups:
 
 - name: IKLAN 🛡
   type: select
+  icon: https://img.icons8.com/?size=100&id=IYMjOl2hPG79&format=png&color=000000
   strategy: round-robin
   disable-udp: false
   proxies:
@@ -126,9 +134,10 @@ proxy-groups:
   disable-udp: false
   proxies:
   - FALLBACK-1
-  - DIRECT-1
+  - URLTEST-1
   use:
   - SettingAkun
+  - SettingDirect
   url: http://www.gstatic.com/generate_204
   interval: 10
 
@@ -137,9 +146,10 @@ proxy-groups:
   disable-udp: false
   proxies:
   - FALLBACK-2
-  - DIRECT-2
+  - URLTEST-2
   use:
   - SettingAkun2
+  - SettingDirect
   url: http://www.gstatic.com/generate_204
   interval: 10
 
@@ -147,6 +157,7 @@ proxy-groups:
   type: fallback
   strategy: round-robin
   disable-udp: false
+  hidden: true
   use:
   - SettingAkun
   url: http://www.gstatic.com/generate_204
@@ -156,6 +167,7 @@ proxy-groups:
   type: fallback
   strategy: round-robin
   disable-udp: false
+  hidden: true
   use:
   - SettingAkun2
   url: http://www.gstatic.com/generate_204
@@ -165,23 +177,30 @@ proxy-groups:
   type: load-balance
   strategy: round-robin
   disable-udp: false
+  hidden: true
   proxies:
   - ISP-1
   - ISP-2
 
-- name: DIRECT-1
-  type: select
-  disable-udp: false
-  interface-name: eth1
-  proxies:
-  - DIRECT
-  
-- name: DIRECT-2
-  type: select
-  disable-udp: false
-  interface-name: eth2
-  proxies:
-  - DIRECT
+- name: URLTEST-1
+  type: url-test
+  use:
+  - SettingAkun
+  url: https://www.speedtest.net/cdn-cgi/trace
+  interval: 300
+  tolerance: 20
+  hidden: true
+  #lazy: true
+
+- name: URLTEST-2
+  type: url-test
+  use:
+  - SettingAkun2
+  url: https://www.speedtest.net/cdn-cgi/trace
+  interval: 300
+  tolerance: 20
+  hidden: true
+  #lazy: true
 
 ######################################  
 # ================= RP  ==================
@@ -206,7 +225,9 @@ rule-providers:
 rules:
 # AdBlock
 - RULE-SET,oisd_big,IKLAN 🛡
+- GEOSITE,category-ads-all,IKLAN 🛡
 # Etc
+- GEOSITE,category-porn,NSFW ❌
 - RULE-SET,Nsfw,NSFW ❌
 - RULE-SET,Speed,SPEEDTEST ⚡
 - NETWORK,TCP,UMUM 🌏
