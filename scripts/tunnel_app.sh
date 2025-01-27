@@ -41,7 +41,6 @@ elif [ "$1" == "passwall" ]; then
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
     wget "${passwall_ipk_packages[@]}" -nv -P packages
-    wget "${passwall2_file_down}" -nv -P packages
     unzip -qq packages/"$passwall_file" -d packages && rm packages/"$passwall_file"
     rm files/usr/bin/patchoc.sh
 elif [ "$1" == "neko-openclash" ]; then
@@ -58,7 +57,6 @@ elif [ "$1" == "openclash-passwall" ]; then
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
     wget "${passwall_ipk_packages[@]}" -nv -P packages
-    wget "${passwall2_file_down}" -nv -P packages
     unzip -qq packages/"$passwall_file" -d packages && rm packages/"$passwall_file"
 elif [ "$1" == "neko-passwall" ]; then
     echo "Installing Neko and Passwall"
@@ -68,7 +66,6 @@ elif [ "$1" == "neko-passwall" ]; then
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
     wget "${passwall_ipk_packages[@]}" -nv -P packages
-    wget "${passwall2_file_down}" -nv -P packages
     unzip -qq packages/"$passwall_file" -d packages && rm packages/"$passwall_file"
 elif [ "$1" == "openclash-passwall-neko" ]; then
     echo "Installing Openclash, Neko and Passwall"
@@ -80,7 +77,6 @@ elif [ "$1" == "openclash-passwall-neko" ]; then
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
     wget "${passwall_ipk_packages[@]}" -nv -P packages
-    wget "${passwall2_file_down}" -nv -P packages
     unzip -qq packages/"$passwall_file" -d packages && rm packages/"$passwall_file"
 fi 
 if [ "$?" -ne 0 ]; then
