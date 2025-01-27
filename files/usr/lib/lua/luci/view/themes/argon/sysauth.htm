@@ -156,6 +156,14 @@
 				<div>
 					<input type="submit" value="<%:Login%>" class="cbi-button cbi-button-apply" />
 				</div>
+<center><img src="<%=media%>/navbar/cube1.png" width="45" height="45" style="border-radius: 8px;" id="yacd-icon" "_blank">
+<script type="text/javascript">
+  document.getElementById("yacd-icon").addEventListener("click", function () {
+    window.open(
+      "http://" + window.location.hostname + ":9090/ui/yacd/?hostname=" + window.location.hostname + "&port=9090&secret=123456"
+    );
+  });
+</script></center>
 			</form>
 			<!-- Login Form End -->
 
