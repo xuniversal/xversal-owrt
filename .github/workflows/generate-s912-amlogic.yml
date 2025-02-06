@@ -232,16 +232,16 @@ jobs:
       - name: Download Image Builder
         id: download
         run: |
-          echo -e "[\033[95m STEPS \033[0m] Starting firmware and rootfs build"
-          chmod +x ${IMAGEBUILDER_SH}
-          if sudo bash ${IMAGEBUILDER_SH} ${{ env.RELEASE_BRANCH }} "${{ env.DEVICES }}"; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo -e "[\033[92m SUCCESS \033[0m] Build completed successfully"
-          else
-            echo "status=failed" >> $GITHUB_OUTPUT
-            echo -e "[\033[91m ERROR \033[0m] Build failed"
-            exit 1
+          RELEASE="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.xz"
+          wget -nv "$RELEASE"
+          tar -xJf *-imagebuilder-* && sync && rm -f *-imagebuilder-*.tar.xz && mv *-imagebuilder-* $WORKING_DIR && sync
+          cp -r $GITHUB_WORKSPACE/origin/* $GITHUB_WORKSPACE/$WORKING_DIR
+          if [ "$TARGET" == "all" ]; then
+             mkdir -p /builder/$WORKING_DIR
+             ln -sf /builder/$WORKING_DIR $GITHUB_WORKSPACE/$WORKING_DIR
+             ln -sf /builder/$WORKING_DIR /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main/openwrt
           fi
+          echo "status=success" >> $GITHUB_OUTPUT
       
       - name: Download External Packages
         id: packages
