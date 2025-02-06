@@ -38,6 +38,7 @@ on:
           - hg680p
           - b860h
           - soc-s912
+          - soc-s905x
           - soc-s905x2
           - soc-s905x3
           - nanopi-r5s
@@ -197,6 +198,8 @@ jobs:
             echo "openwrt_board=all" >> $GITHUB_ENV
           elif [ "$TARGET" == "hg680p" ] || [ "$TARGET" == "b860h" ]; then
             echo "openwrt_board=s905x" >> $GITHUB_ENV
+          elif [ "$TARGET" == "soc-s905x" ]; then
+            echo "openwrt_board=s905x" >> $GITHUB_ENV  
           elif [ "$TARGET" == "soc-s912" ]; then
             echo "openwrt_board=s912" >> $GITHUB_ENV
           elif [ "$TARGET" == "soc-s905x2" ]; then
