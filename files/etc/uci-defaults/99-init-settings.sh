@@ -22,18 +22,6 @@ echo "###############################################"
 # Set login root password
 (echo "root"; sleep 1; echo "root") | passwd > /dev/null
 
-# Add Oh My Zsh
-echo -e "${INFO} Installing Oh My Bash..."
-mkdir -p ${custom_files_path}/usr/share/oh-my-bash
-if ! git clone https://github.com/ohmybash/oh-my-bash.git ${custom_files_path}/usr/share/oh-my-bash; then
-    echo -e "${ERROR} Failed to clone Oh My Bash repository."
-    exit 1
-fi
-cp ${custom_files_path}/usr/share/oh-my-bash/templates/bashrc.osh-template ${custom_files_path}/usr/share/oh-my-bash/.bashrc
-sed -i 's|^export OSH=~/.oh-my-bash|export OSH=/usr/share/oh-my-bash|g' ${custom_files_path}/usr/share/oh-my-bash/.bashrc
-sed -i 's|^OSH_THEME="font"|OSH_THEME="zork"|g' ${custom_files_path}/usr/share/oh-my-bash/.bashrc
-echo -e "${SUCCESS} Oh My Zsh installed successfully."
-
 # Set hostname and Timezone to Asia/Jakarta
 echo "Setup NTP Server and Time Zone to Asia/Jakarta"
 uci set system.@system[0].hostname='OpenWRT'
