@@ -212,6 +212,14 @@ jobs:
             echo "ARCH_1=arm64" >> $GITHUB_ENV
             echo "ARCH_2=aarch64" >> $GITHUB_ENV
             echo "ARCH_3=aarch64_generic" >> $GITHUB_ENV
+          else
+            echo "PROFILE=Default" >> $GITHUB_ENV
+            echo "TARGET_SYSTEM=armvirt/64" >> $GITHUB_ENV
+            echo "TARGET_NAME=armvirt-64" >> $GITHUB_ENV
+            TARGET_NAME="armvirt-64"
+            echo "ARCH_1=arm64" >> $GITHUB_ENV
+            echo "ARCH_2=aarch64" >> $GITHUB_ENV
+            echo "ARCH_3=aarch64_generic" >> $GITHUB_ENV
           fi
           echo "WORKING_DIR="${RELEASE_BRANCH%:*}"-imagebuilder-"$TARGET_NAME".Linux-x86_64" >> $GITHUB_ENV
           echo "DOWNLOAD_BASE=https://downloads."${RELEASE_BRANCH%:*}".org" >> $GITHUB_ENV
@@ -224,24 +232,39 @@ jobs:
       - name: Download Image Builder
         id: download
         run: |
-          RELEASE="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.zst"
-          wget -nv "$RELEASE"
+          RELEASE_XZ="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.xz"
+          RELEASE_ZST="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.zst"
           
-          sudo apt-get update && sudo apt-get install -y zstd
+          # Coba unduh file .tar.xz terlebih dahulu, jika gagal coba .tar.zst
+          if wget -nv "$RELEASE_XZ"; then
+              FILE_TYPE="xz"
+          elif wget -nv "$RELEASE_ZST"; then
+              FILE_TYPE="zst"
+          else
+              echo "Error: Tidak dapat mengunduh Image Builder dalam format .tar.xz atau .tar.zst"
+              exit 1
+          fi
 
-          tar --use-compress-program=unzstd -xf *-imagebuilder-*.tar.zst
-          
-          sync && rm -f *-imagebuilder-*.tar.zst
+          # Ekstrak file berdasarkan format yang berhasil diunduh
+          if [ "$FILE_TYPE" == "xz" ]; then
+              tar -xJf *-imagebuilder-*.tar.xz
+              rm -f *-imagebuilder-*.tar.xz
+          elif [ "$FILE_TYPE" == "zst" ]; then
+              tar --use-compress-program=unzstd -xf *-imagebuilder-*.tar.zst
+              rm -f *-imagebuilder-*.tar.zst
+          fi
+
+          sync
           mv *-imagebuilder-* $WORKING_DIR && sync
           cp -r $GITHUB_WORKSPACE/origin/* $GITHUB_WORKSPACE/$WORKING_DIR
-          
+
           if [ "$TARGET" == "all" ]; then
              mkdir -p /builder/$WORKING_DIR
              ln -sf /builder/$WORKING_DIR $GITHUB_WORKSPACE/$WORKING_DIR
              ln -sf /builder/$WORKING_DIR /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main/openwrt
           fi
-          echo "status=success" >> $GITHUB_OUTPUT
 
+          echo "status=success" >> $GITHUB_OUTPUT
 
       
       - name: Download External Packages
