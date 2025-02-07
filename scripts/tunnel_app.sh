@@ -14,7 +14,7 @@ neko_file_down="$(curl -s https://api.github.com/repos/nosignals/neko/releases/l
 passwall_api="https://api.github.com/repos/xiaorouji/openwrt-passwall/releases"
 passwall_file="passwall_packages_ipk_$ARCH_3.zip"
 passwall_file_down="$(curl -s ${passwall_api} | grep "browser_download_url" | grep -oE "https.*${passwall_file}" | head -n 1)"
-passwall_ipk="https://github.com/xiaorouji/openwrt-passwall/releases/download/25.1.15-1/luci-23.05_luci-app-passwall_25.1.15_all.ipk"  
+passwall_ipk="https://github.com/xiaorouji/openwrt-passwall/releases/download/25.1.28-1/luci-23.05_luci-app-passwall_25.1.28_all.ipk"  
 
 if [ "$1" == "openclash" ]; then
     echo "Downloading Openclash packages"
