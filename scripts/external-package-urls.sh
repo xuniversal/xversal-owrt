@@ -16,7 +16,6 @@ files1=(
     "modemmanager|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
     "libmbim|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
     "libqmi|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
-    "wget|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/packages"
     "dns2tcp|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/packages"
     "luci-app-argon-config|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
     "luci-theme-argon|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
