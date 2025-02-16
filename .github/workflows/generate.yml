@@ -341,3 +341,16 @@ jobs:
             - Default password: root
             - Default WIFI name: OpenWRT or OpenWRT_5GHz - if device support
             - Default WIFI password: openwrt
+
+      - name: Install megatools
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install megatools
+
+      - name: Upload Firmware to MEGA.nz
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: |
+          cd $WORKING_DIR/compiled_images
+          mega-login ${{ secrets.MEGA_EMAIL }} ${{ secrets.MEGA_PASSWORD }}
+          mega-put * ${{ env.RELEASE_TAG }}
+          mega-logout   
