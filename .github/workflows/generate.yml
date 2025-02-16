@@ -190,32 +190,32 @@ jobs:
       - name: Download Image Builder
         id: download
         run: |
-    RELEASE_XZ="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.xz"
-    RELEASE_ZST="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.zst"
+          RELEASE_XZ="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.xz"
+          RELEASE_ZST="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.zst"
     
     # Coba unduh file .tar.xz terlebih dahulu, jika gagal coba .tar.zst
-    if wget -nv "$RELEASE_XZ"; then
-        FILE_TYPE="xz"
-    elif wget -nv "$RELEASE_ZST"; then
-        FILE_TYPE="zst"
-    else
-        echo "❌ Error: Tidak dapat mengunduh Image Builder dalam format .tar.xz atau .tar.zst"
-        exit 1
-    fi
+          if wget -nv "$RELEASE_XZ"; then
+              FILE_TYPE="xz"
+          elif wget -nv "$RELEASE_ZST"; then
+              FILE_TYPE="zst"
+          else
+              echo "❌ Error: Tidak dapat mengunduh Image Builder dalam format .tar.xz atau .tar.zst"
+          exit 1
+          fi
 
     # Ekstrak file berdasarkan format yang berhasil diunduh
-    if [ "$FILE_TYPE" == "xz" ]; then
-        tar -xJf *-imagebuilder-*.tar.xz
-        rm -f *-imagebuilder-*.tar.xz
-    elif [ "$FILE_TYPE" == "zst" ]; then
-        tar --use-compress-program=unzstd -xf *-imagebuilder-*.tar.zst
-        rm -f *-imagebuilder-*.tar.zst
-    fi
+         if [ "$FILE_TYPE" == "xz" ]; then
+              tar -xJf *-imagebuilder-*.tar.xz
+              rm -f *-imagebuilder-*.tar.xz
+         elif [ "$FILE_TYPE" == "zst" ]; then
+              tar --use-compress-program=unzstd -xf *-imagebuilder-*.tar.zst
+              rm -f *-imagebuilder-*.tar.zst
+         fi
 
-    sync
-    mv *-imagebuilder-* $WORKING_DIR && sync
-    cp -r $GITHUB_WORKSPACE/origin/* $GITHUB_WORKSPACE/$WORKING_DIR
-    echo "status=success" >> $GITHUB_OUTPUT
+         sync
+         mv *-imagebuilder-* $WORKING_DIR && sync
+         cp -r $GITHUB_WORKSPACE/origin/* $GITHUB_WORKSPACE/$WORKING_DIR
+         echo "status=success" >> $GITHUB_OUTPUT
 
       
       - name: Download External Packages
