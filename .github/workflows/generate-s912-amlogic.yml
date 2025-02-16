@@ -423,9 +423,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
-          wget https://github.com/megous/megatools/releases/download/1.11.1.20230212/megatools-1.11.1.20230212-linux-x86_64.tar.gz
-          tar -xvzf megatools-1.11.1.20230212-linux-x86_64.tar.gz
-          sudo mv megatools-1.11.1.20230212-linux-x86_64/megatools /usr/local/bin/
+          wget https://xff.cz/megatools/builds/builds/megatools-1.11.3.20250203-linux-x86_64.tar.gz
+          tar -xvzf megatools-1.11.3.20250203-linux-x86_64.tar.gz
+          sudo mv megatools-1.11.3.20250203-linux-x86_64/megatools /usr/local/bin/
           megatools --version
 
       - name: Upload Firmware to MEGA.nz
