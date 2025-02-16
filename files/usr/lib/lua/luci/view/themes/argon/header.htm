@@ -163,6 +163,7 @@
 					<div class="container">
 						<div class="flex1">
 							<a class="showSide"></a>
+
 							<a class="brand" href="#"><%=brand_name%></a>
 						</div>
 						<div class="status" id="indicators"></div>
@@ -183,20 +184,40 @@
 						<% end %>
 					</div>
 					<%- end -%>
-<a href='/cgi-bin/luci/admin/services/openclash'><img src="<%=media%>/navbar/blackcat1.png" width="45" height="45" style="border-radius: 8px;"></a>
-<a href='/cgi-bin/luci/admin/services/openclash/editor'><img src="<%=media%>/navbar/oceditor.png" width="45" height="45" style="border-radius: 8px;"></a>
-<a href='/cgi-bin/luci/admin/nas/tinyfm'><img src="<%=media%>/navbar/folder.png" width="45" height="45" style="border-radius: 8px;"></a>
-<a href='/cgi-bin/luci/admin/network/network'><img src="<%=media%>/navbar/network1.png" width="45" height="45" style="border-radius: 8px;"></a>
-<a href='/cgi-bin/luci/admin/services/ttyd'><img src="<%=media%>/navbar/terminal.png" width="45" height="45" style="border-radius: 8px;"></a>
-<a href='/cgi-bin/luci/admin/status/netmon'><img src="<%=media%>/navbar/monitor1.png" width="45" height="45" style="border-radius: 8px;"></a>
-<img src="<%=media%>/navbar/cube1.png" width="45" height="45" style="border-radius: 8px;" id="yacd-icon" "_blank">
-<script type="text/javascript">
+
+<style>
+  .navbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+  }
+</style>
+
+<div class="navbar">
+  <a href='/cgi-bin/luci/admin/services/openclash'><img src="<%=media%>/navbar/blackcat1.png"></a>
+  <a href='/cgi-bin/luci/admin/services/openclash/editor'><img src="<%=media%>/navbar/oceditor.png"></a>
+  <a href='/cgi-bin/luci/admin/nas/tinyfm'><img src="<%=media%>/navbar/folder.png"></a>
+  <a href='/cgi-bin/luci/admin/network/network'><img src="<%=media%>/navbar/network1.png"></a>
+  <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'><img src="<%=media%>/navbar/terminal.png"></a>
+  <a href='/cgi-bin/luci/admin/status/netmon'><img src="<%=media%>/navbar/monitor1.png"></a>
+  <img src="<%=media%>/navbar/cube1.png" id="yacd-icon">
+</div>
+
+<script>
   document.getElementById("yacd-icon").addEventListener("click", function () {
     window.open(
       "http://" + window.location.hostname + ":9090/ui/yacd/?hostname=" + window.location.hostname + "&port=9090&secret=123456"
     );
   });
 </script>
+
 					<noscript>
 						<div class="alert-message error">
 							<h4><%:JavaScript required!%></h4>
