@@ -418,22 +418,3 @@ jobs:
             
             ### Install to EMMC
             - Login to OpenWrt → System → Amlogic Service → Install OpenWrt
-
-      - name: Install megatools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://xff.cz/megatools/builds/builds/megatools-1.11.3.20250203-linux-x86_64.tar.gz
-          tar -xvzf megatools-1.11.3.20250203-linux-x86_64.tar.gz
-          sudo mv megatools-1.11.3.20250203-linux-x86_64/megatools /usr/local/bin/
-          megatools --version
-
-      - name: Upload Firmware to MEGA.nz
-        if: steps.compile.outputs.status == 'success' && !cancelled()
-        run: |
-          cd $WORKING_DIR/compiled_images
-          megatools login --username ${{ secrets.MEGA_EMAIL }} --password ${{ secrets.MEGA_PASSWORD }}
-          megatools mkdir "/${{ env.RELEASE_TAG }}"
-          megatools put --path "/${{ env.RELEASE_TAG }}" *
-          megatools logout
- 
