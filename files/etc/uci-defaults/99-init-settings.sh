@@ -144,7 +144,7 @@ uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit
 echo "Setup misc settings"
 # remove login password required when accessing terminal
 uci set ttyd.@ttyd[0].command='/bin/bash --login'
-uci commit
+uci commit ttyd
 
 # remove huawei me909s usb-modeswitch
 sed -i -e '/12d1:15c1/,+5d' /etc/usb-mode.json
