@@ -346,15 +346,26 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
-          wget https://github.com/megous/megatools/releases/download/1.11.1.20230212/megatools-1.11.1.20230212-linux-x86_64.tar.gz
-          tar -xvzf megatools-1.11.1.20230212-linux-x86_64.tar.gz
-          sudo mv megatools-1.11.1.20230212-linux-x86_64/megatools /usr/local/bin/
+          # Unduh megatools dari URL alternatif
+          wget https://xff.cz/megatools/builds/builds/megatools-1.11.3.20250203-linux-x86_64.tar.gz
+          # Ekstrak megatools
+          tar -xvzf megatools-1.11.3.20250203-linux-x86_64.tar.gz
+          # Pindahkan binary ke direktori yang ada di PATH
+          sudo mv megatools-1.11.3.20250203-linux-x86_64/megatools /usr/local/bin/
+          # Verifikasi instalasi
           megatools --version
 
       - name: Upload Firmware to MEGA.nz
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd $WORKING_DIR/compiled_images
+          # Login ke MEGA.nz
           megatools login --username ${{ secrets.MEGA_EMAIL }} --password ${{ secrets.MEGA_PASSWORD }}
-          megatools put --path "/${{ env.RELEASE_TAG }}" *
+          # Buat folder tujuan di MEGA.nz (jika belum ada)
+          megatools mkdir "/${{ env.RELEASE_TAG }}"
+          # Upload semua file ke folder tujuan
+          for file in *; do
+            megatools put --path "/${{ env.RELEASE_TAG }}" "$file"
+          done
+          # Logout dari MEGA.nz
           megatools logout
