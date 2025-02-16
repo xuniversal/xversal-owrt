@@ -352,5 +352,5 @@ jobs:
         run: |
           cd $WORKING_DIR/compiled_images
           mega-login ${{ secrets.MEGA_EMAIL }} ${{ secrets.MEGA_PASSWORD }}
-          mega-put * ${{ env.RELEASE_TAG }}
-          mega-logout   
+          mega-put * "${{ inputs.mega_folder }}/${{ env.RELEASE_TAG }}"
+          mega-logout
