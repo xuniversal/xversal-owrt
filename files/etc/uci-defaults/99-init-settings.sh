@@ -97,6 +97,41 @@ else
   echo "No wireless device detected."
 fi
 
+# Install Zsh
+echo "Installing Zsh..."
+opkg update && opkg install zsh
+
+# Install Oh My Zsh
+echo "Installing Oh My Zsh..."
+export RUNZSH=no
+export CHSH=no
+export KEEP_ZSHRC=yes
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Set Zsh as the default shell for root
+echo "Setting Zsh as default shell..."
+chsh -s $(which zsh) root
+
+# Apply Oh My Zsh config
+echo "Applying Oh My Zsh configuration..."
+if [ ! -f "/root/.zshrc" ]; then
+    cp /root/.oh-my-zsh/templates/zshrc.zsh-template /root/.zshrc
+fi
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' /root/.zshrc  # Ganti tema sesuai keinginan
+
+# Install Zsh plugins
+echo "Installing Zsh plugins..."
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+# Aktifkan plugin di .zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /root/.zshrc
+
+# Reload shell
+echo "Reloading shell..."
+exec zsh
+
+
 # custom repo and Disable opkg signature check
 echo "Setup custom repo using MyOPKG Repo"
 if grep -qE '^VERSION_ID="21' /etc/os-release; then
