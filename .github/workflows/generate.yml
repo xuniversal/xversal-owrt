@@ -342,20 +342,19 @@ jobs:
             - Default WIFI name: OpenWRT or OpenWRT_5GHz - if device support
             - Default WIFI password: openwrt
 
-      - name: Install dependencies
+      - name: Install megatools
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
-          wget https://github.com/megous/megatools/releases/download/mega-tools-1.9.0/megatools-1.9.0-linux-x86_64.tar.gz
-          tar -xvzf megatools-1.9.0-linux-x86_64.tar.gz
-          sudo mv megatools-1.9.0-linux-x86_64/megac /usr/local/bin/
+          wget https://megatools.megous.com/builds/megatools-1.11.0.20220519-linux-x86_64.tar.gz
+          tar -xvzf megatools-1.11.0.20220519-linux-x86_64.tar.gz
+          sudo mv megatools-1.11.0.20220519-linux-x86_64/megatools /usr/local/bin/
+          megatools --version
 
-      - name: Upload Firmware to Mega.nz
+      - name: Upload Firmware to MEGA.nz
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd $WORKING_DIR/compiled_images
           mega-login ${{ secrets.MEGA_EMAIL }} ${{ secrets.MEGA_PASSWORD }}
           mega-put * "/${{ env.RELEASE_TAG }}"
           mega-logout
-        env:
-          WORKING_DIR: openwrt-imagebuilder-x86-64.Linux-x86_64
-          RELEASE_TAG: generic-openwrt-24.10.0-february-2025
