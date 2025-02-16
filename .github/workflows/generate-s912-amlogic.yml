@@ -433,5 +433,7 @@ jobs:
         run: |
           cd $WORKING_DIR/compiled_images
           megatools login --username ${{ secrets.MEGA_EMAIL }} --password ${{ secrets.MEGA_PASSWORD }}
+          megatools mkdir "/${{ env.RELEASE_TAG }}"
           megatools put --path "/${{ env.RELEASE_TAG }}" *
-          megatools logout       
+          megatools logout
+ 
