@@ -353,7 +353,7 @@ jobs:
       - name: Upload Firmware to Mega.nz
         run: |
           cd $WORKING_DIR/compiled_images
-          mega-login ${{ secrets.MEGA_USERNAME }} ${{ secrets.MEGA_PASSWORD }}
+          mega-login ${{ secrets.MEGA_EMAIL }} ${{ secrets.MEGA_PASSWORD }}
           mega-put * "/${{ env.RELEASE_TAG }}"
           mega-logout
         env:
