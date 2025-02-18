@@ -1,6 +1,9 @@
 #!/bin/bash
 # This script for custom download the latest packages version from snapshots/stable repo's url and github releases.
 # Put file name and url base.
+
+CURVER="24.10"   # Ganti dengan versi OpenWrt yang sesuai
+
 # Download packages from official snapshots, stable repo's urls and custom repo's.
 {
 files1=(
@@ -74,6 +77,7 @@ files2+=(
     "nikki|https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest"  # Tambahkan entri untuk nikki
 )
 
+
 echo "#########################################"
 echo "Downloading packages from github releases"
 echo "#########################################"
@@ -101,15 +105,16 @@ for entry in "${files2[@]}"; do
                 temp_dir=$(mktemp -d)
                 tar -xzf "packages/$(basename "$file_url")" -C "$temp_dir"
                 
-                # Cari file .ipk yang sesuai dengan arsitektur dan versi OpenWrt
-                ipk_file=$(find "$temp_dir" -type f -name "*${ARCH_3}*.ipk" | grep -E "${BRANCH//./\\.}" | head -n 1)
+                # Cari file .ipk yang sesuai dengan pola nikki_${ARCH_3}-openwrt-${CURVER}
+                nikki_file_ipk="nikki_${ARCH_3}-openwrt-${CURVER}"
+                found_ipk=$(find "$temp_dir" -name "${nikki_file_ipk}*.ipk" | head -n 1)
                 
-                if [ ! -z "$ipk_file" ]; then
-                    echo "Found matching .ipk: $(basename "$ipk_file")"
-                    mv "$ipk_file" "packages/"
-                    echo "Moved $(basename "$ipk_file") to packages directory."
+                if [ ! -z "$found_ipk" ]; then
+                    echo "Found .ipk file: $(basename "$found_ipk")"
+                    mv "$found_ipk" "packages/"
+                    echo "Moved $(basename "$found_ipk") to packages directory."
                 else
-                    echo "No matching .ipk file found for architecture [$ARCH_3] and version [$BRANCH]."
+                    echo "No .ipk file found matching pattern: ${nikki_file_ipk}"
                 fi
                 
                 # Hapus direktori sementara
