@@ -88,12 +88,27 @@ echo "#"
 for entry in "${files2[@]}"; do
     IFS="|" read -r filename2 base_url <<< "$entry"
     echo "Processing file: $filename2"
-    file_urls=$(curl -s "$base_url" | grep "browser_download_url" | grep -oE "https.*/${filename2}_[_0-9a-zA-Z\._~-]*\.ipk" | sort -V | tail -n 1)
+    
+    # Cari file .tar.gz untuk nikki, atau .ipk untuk paket lainnya
+    if [[ "$filename2" == "nikki" ]]; then
+        file_urls=$(curl -s "$base_url" | grep "browser_download_url" | grep -oE "https.*/${filename2}.*\.tar\.gz" | sort -V | tail -n 1)
+    else
+        file_urls=$(curl -s "$base_url" | grep "browser_download_url" | grep -oE "https.*/${filename2}_[_0-9a-zA-Z\._~-]*\.ipk" | sort -V | tail -n 1)
+    fi
+
     for file_url in $file_urls; do
         if [ ! -z "$file_url" ]; then
             echo "Downloading $(basename "$file_url")"
             echo "from $file_url"
             curl -Lo "packages/$(basename "$file_url")" "$file_url"
+            
+            # Jika file adalah .tar.gz, ekstrak ke direktori packages
+            if [[ "$file_url" == *".tar.gz" ]]; then
+                echo "Extracting $(basename "$file_url")"
+                tar -xzf "packages/$(basename "$file_url")" -C packages
+                echo "Extracted $(basename "$file_url") successfully!."
+            fi
+            
             echo "Packages [$filename2] downloaded successfully!."
             echo "#"
             break
@@ -103,41 +118,3 @@ for entry in "${files2[@]}"; do
     done
 done
 }
-#################################################################################################################################
-
-# for testing download url before commiting
-# remove comment# then copy to your terminal for testing it
-# format for offical repo: "PACKAGE-NAME|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
-# format for github release: "PACKAGE-NAME|https://api.github.com/repos/GITHUBUSER/REPO-NAME/releases"
-
-# official and custom repo
-#{
-#BRANCH="23.05.3"
-#ARCH_3="x86_64"
-#files1=(
-#    "sms-tool|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
-#)
-#for entry in "${files2[@]}"; do
-#   IFS="|" read -r filename1 base_url <<< "$entry"
-#   file_urls=$(curl -sL "$base_url" | grep -oE "${filename1}_[0-9a-zA-Z\._~-]*\.ipk" | sort -V | tail -n 1)
-#   echo "file name: $filename1"
-#   echo "remote file name: $file_urls"
-#   echo "download url: $base_url/$file_urls"
-#done
-#}
-
-# github release
-#{
-#BRANCH="23.05.3"
-#ARCH_3="x86_64"
-#files2=(
-#    "luci-app-sms-tool-js|https://api.github.com/repos/4IceG/luci-app-sms-tool-js/releases"
-#)
-#for entry in "${files2[@]}"; do
-#   IFS="|" read -r filename2 base_url <<< "$entry"
-#   file_urls=$(curl -s "$base_url" | grep "browser_download_url" | grep -oE "https.*/${filename2}_[_0-9a-zA-Z\._~-]*\.ipk" | sort -V | tail -n 1)
-#   echo "file name: $filename2"
-#   echo "remote file name: $(basename "$file_urls")"
-#   echo "download url: $file_urls"
-#done
-#}
