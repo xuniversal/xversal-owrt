@@ -44,8 +44,6 @@ elif [ "$1" == "openclash-passwall" ]; then
     echo "Installing Openclash and Passwall"
     echo "Downloading Openclash packages"
     wget ${openclash_file_down} -nv -P packages
-    echo "Downloading Nikki packages"
-    wget ${nikki_file_down} -nv -P packages
     echo "Downloading Passwall packages ipk"
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
