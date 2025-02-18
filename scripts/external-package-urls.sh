@@ -34,7 +34,6 @@ files1=(
     "python3-speedtest-cli|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
     "librespeed-go|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
     "luci-app-ramfree|https://dl.openwrt.ai/23.05/packages/$ARCH_3/kiddin9/"
-    
 )
 
 echo "###########################################################"
@@ -79,6 +78,7 @@ files2+=(
     "luci-theme-alpha|https://api.github.com/repos/derisamedia/luci-theme-alpha/releases/latest"
     "luci-app-alpha-config|https://api.github.com/repos/derisamedia/luci-theme-alpha/releases/latest"
     "luci-app-rakitanmanager|https://api.github.com/repos/rtaserver/RakitanManager/releases/latest"
+    "nikki|https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases/latest"  # Tambahkan entri untuk nikki
 )
 
 echo "#########################################"
@@ -103,7 +103,6 @@ for entry in "${files2[@]}"; do
     done
 done
 }
-
 #################################################################################################################################
 
 # for testing download url before commiting
