@@ -42,10 +42,10 @@ elif [ "$2" == "openclash-passwall-neko" ]; then
 fi
 
 # 
-PACKAGES+=" mihomo luci-app-mihomo tailscale luci-app-tailscale"
+PACKAGES+=" nikki luci-app-nikki"
 # luci-app-passwall2
 # Adguardhome
-PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools"
+PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools tailscale luci-app-tailscale"
 
 # NAS and Hard disk tools
 PACKAGES+=" luci-app-diskman luci-app-hd-idle luci-app-disks-info smartmontools kmod-usb-storage kmod-usb-storage-uas ntfs-3g"
