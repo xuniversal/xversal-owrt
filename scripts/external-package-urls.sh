@@ -1,15 +1,9 @@
 #!/bin/bash
 # This script for custom download the latest packages version from snapshots/stable repo's url and github releases.
 # Put file name and url base.
-
 # Download packages from official snapshots, stable repo's urls and custom repo's.
 {
 files1=(
-    #"luci-proto-modemmanager|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/luci"
-    #"luci-proto-mbim|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/luci"
-    #"modemmanager|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
-    #"libmbim|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
-    #"libqmi|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
     "sms-tool|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
     "luci-proto-modemmanager|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/luci"
     "luci-proto-mbim|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/luci"
@@ -19,7 +13,6 @@ files1=(
     "dns2tcp|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/packages"
     "luci-app-argon-config|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
     "luci-theme-argon|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
-    #"sms-tool|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
     "luci-app-argon-config|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "luci-theme-argon|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
@@ -102,11 +95,26 @@ for entry in "${files2[@]}"; do
             echo "from $file_url"
             curl -Lo "packages/$(basename "$file_url")" "$file_url"
             
-            # Jika file adalah .tar.gz, ekstrak ke direktori packages
+            # Jika file adalah .tar.gz, ekstrak dan cari file .ipk yang sesuai
             if [[ "$file_url" == *".tar.gz" ]]; then
                 echo "Extracting $(basename "$file_url")"
-                tar -xzf "packages/$(basename "$file_url")" -C packages
-                echo "Extracted $(basename "$file_url") successfully!."
+                temp_dir=$(mktemp -d)
+                tar -xzf "packages/$(basename "$file_url")" -C "$temp_dir"
+                
+                # Cari file .ipk yang sesuai dengan arsitektur dan versi OpenWrt
+                ipk_file=$(find "$temp_dir" -type f -name "*${ARCH_3}*.ipk" | grep -E "${BRANCH//./\\.}" | head -n 1)
+                
+                if [ ! -z "$ipk_file" ]; then
+                    echo "Found matching .ipk: $(basename "$ipk_file")"
+                    mv "$ipk_file" "packages/"
+                    echo "Moved $(basename "$ipk_file") to packages directory."
+                else
+                    echo "No matching .ipk file found for architecture [$ARCH_3] and version [$BRANCH]."
+                fi
+                
+                # Hapus direktori sementara
+                rm -rf "$temp_dir"
+                echo "Extracted and processed $(basename "$file_url") successfully!."
             fi
             
             echo "Packages [$filename2] downloaded successfully!."
