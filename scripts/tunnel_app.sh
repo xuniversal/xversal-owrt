@@ -10,6 +10,11 @@ neko_api="https://api.github.com/repos/nosignals/neko/releases"
 neko_file="luci-app-neko"
 neko_file_down="$(curl -s https://api.github.com/repos/nosignals/neko/releases/latest | jq -r '.assets[] | select(.name | endswith("_23_05.ipk")) | .browser_download_url')"
 
+# nkki
+nikki_api="https://api.github.com/repos/nikkinikki-org/OpenWrt-nikki/releases"
+nikki_file="nikki_${ARCH_3}-openwrt-${CURVER}"
+nikki_file_down=$(curl -s "${nikki_api}" | grep "browser_download_url" | grep -oE "https.*${nikki_file_down}.*.tar.gz" | head -n 1)
+
 # passwall
 passwall_api="https://api.github.com/repos/xiaorouji/openwrt-passwall/releases"
 passwall_file="passwall_packages_ipk_$ARCH_3.zip"
@@ -39,6 +44,8 @@ elif [ "$1" == "openclash-passwall" ]; then
     echo "Installing Openclash and Passwall"
     echo "Downloading Openclash packages"
     wget ${openclash_file_down} -nv -P packages
+    echo "Downloading Nikki packages"
+    wget ${nikki_file_down} -nv -P packages
     echo "Downloading Passwall packages ipk"
     wget "$passwall_file_down" -nv -P packages
     wget "$passwall_ipk" -nv -P packages
