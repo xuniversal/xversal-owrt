@@ -1,0 +1,234 @@
+---
+# =================META-RULE==================
+dns:
+  nameserver:
+  - https://dns.adguard.com/dns-query
+  - https://dns-google.com/dns-query
+  - tls://dns.adguard.com
+  - tls://dns-google.com/
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  listen: 0.0.0.0:7874
+  fake-ip-filter:
+  - "+.*"
+  default-nameserver:
+  - 8.8.8.8
+  - 8.8.4.4
+redir-port: 7892
+tproxy-port: 7895
+port: 7890
+socks-port: 7891
+mixed-port: 7893
+mode: rule
+log-level: info
+allow-lan: true
+external-controller: 0.0.0.0:9090
+secret: '123456'
+bind-address: "*"
+external-ui: "/usr/share/openclash/ui"
+ipv6: false
+tun:
+  enable: true
+  stack: system
+  device: utun
+  auto-route: false
+  auto-detect-interface: false
+  dns-hijack:
+  - tcp://any:53
+profile:
+  store-selected: true
+  store-fake-ip: true
+unified-delay: true
+# ================= PG ==================
+proxies:
+proxy-providers:
+  SettingAkun:
+    type: file
+    path: "./proxy_provider/interface.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+  SettingAkun2:
+    type: file
+    path: "./proxy_provider/interface-2.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+  SettingDirect:
+    type: file
+    path: "./proxy_provider/direct.yaml"
+    health-check:
+      enable: true
+      url: https://www.speedtest.net/cdn-cgi/trace
+      interval: 300
+
+# ================= PG ==================
+proxy-groups:
+- name: SPEEDTEST ⚡
+  type: select
+  icon: https://img.icons8.com/?size=100&id=15178&format=png&color=000000
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SettingAkun
+  - SettingAkun2
+  - SettingDirect
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+  proxies:
+  - ISP-LB
+
+- name: UMUM 🌏
+  type: select
+  icon: https://img.icons8.com/?size=100&id=c84A8yTomT5p&format=png&color=000000
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+- name: GAME 🎮
+  type: select
+  icon: https://img.icons8.com/?size=100&id=11907&format=png&color=000000
+  disable-udp: false
+  use:
+  - SettingDirect
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+- name: NSFW ❌
+  type: select
+  icon: https://img.icons8.com/?size=100&id=eUfvXepuZG4g&format=png&color=000000
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+- name: IKLAN 🛡
+  type: select
+  icon: https://img.icons8.com/?size=100&id=IYMjOl2hPG79&format=png&color=000000
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - REJECT
+  - ISP-1
+  - ISP-2
+  - ISP-LB
+
+####### Silahkan ubah interface sesuai nama masing-masing #######
+- name: ISP-1
+  type: select
+  disable-udp: false
+  proxies:
+  - FALLBACK-1
+  - URLTEST-1
+  use:
+  - SettingAkun
+  - SettingDirect
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: ISP-2
+  type: select
+  disable-udp: false
+  proxies:
+  - FALLBACK-2
+  - URLTEST-2
+  use:
+  - SettingAkun2
+  - SettingDirect
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: FALLBACK-1
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  hidden: true
+  use:
+  - SettingAkun
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: FALLBACK-2
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  hidden: true
+  use:
+  - SettingAkun2
+  url: http://www.gstatic.com/generate_204
+  interval: 10
+
+- name: ISP-LB
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  hidden: true
+  proxies:
+  - ISP-1
+  - ISP-2
+
+- name: URLTEST-1
+  type: url-test
+  use:
+  - SettingAkun
+  url: https://www.speedtest.net/cdn-cgi/trace
+  interval: 300
+  tolerance: 20
+  hidden: true
+  #lazy: true
+
+- name: URLTEST-2
+  type: url-test
+  use:
+  - SettingAkun2
+  url: https://www.speedtest.net/cdn-cgi/trace
+  interval: 300
+  tolerance: 20
+  hidden: true
+  #lazy: true
+
+######################################  
+# ================= RP  ==================
+rule-providers:
+#iklan&18+
+  Nsfw:
+    type: file
+    behavior: domain
+    path: "./rule_provider/rule_nsfw.yaml"
+  Speed:
+    type: file
+    behavior: classical
+    path: "./rule_provider/rule_speedtest.yaml"  
+  oisd_big:
+    type: http
+    behavior: classical
+    path: "./rule_provider/oisd_big.yaml"
+    url: https://raw.githubusercontent.com/hillz2/openclash_adblock/main/oisd_big.yaml
+    interval: 28800 # Update rules every 8 hours
+    
+# ================= RULES  ==================
+rules:
+# AdBlock
+- RULE-SET,oisd_big,IKLAN 🛡
+- GEOSITE,category-ads-all,IKLAN 🛡
+# Etc
+- GEOSITE,category-porn,NSFW ❌
+- RULE-SET,Nsfw,NSFW ❌
+- RULE-SET,Speed,SPEEDTEST ⚡
+- NETWORK,TCP,UMUM 🌏
+- NETWORK,UDP,GAME 🎮
