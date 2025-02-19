@@ -1,0 +1,35 @@
+proxies:
+- name: Akun-1-eth2
+  server: bug.com
+  port: 443
+  type: vless
+  uuid: 477450c6-0151-4ffc-9c46-67e20f8d5cc1
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  udp: true
+  servername: server.com
+  network: ws
+  ws-opts:
+    path: /vless
+    headers:
+      Host: server.com
+  interface-name: eth2
+
+- name: Akun-2-eth2
+  type: vmess
+  server: bug.com
+  port: 443
+  uuid: 376918c9-954e-49f1-bf64-131ef7f00758
+  alterId: 0
+  cipher: auto
+  udp: true
+  skip-cert-verify: true
+  tls: true
+  servername: server.com
+  network: ws
+  ws-opts:
+      path: /vmess
+      headers:
+        Host: server.com
+  interface-name: eth2

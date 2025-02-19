@@ -1,0 +1,12 @@
+proxies:
+- name: "Direct-eth1"
+  type: direct
+  udp: true
+  ip-version: ipv4
+  interface-name: eth1
+
+- name: "Direct-eth2"
+  type: direct
+  udp: true
+  ip-version: ipv4
+  interface-name: eth2
