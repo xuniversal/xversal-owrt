@@ -19,6 +19,9 @@ files1=(
     "dns2tcp|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/packages"
     "luci-app-argon-config|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
     "luci-theme-argon|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
+    "luci-app-ramfree|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
+    "nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
+    "luci-app-nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
     #"sms-tool|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
     "luci-app-argon-config|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "luci-theme-argon|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
@@ -33,9 +36,6 @@ files1=(
     "luci-app-netspeedtest|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "python3-speedtest-cli|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
     "librespeed-go|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
-    "luci-app-ramfree|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
-    "nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
-    "luci-app-nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
 )
 
 echo "###########################################################"
