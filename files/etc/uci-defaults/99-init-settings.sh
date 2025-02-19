@@ -188,6 +188,8 @@ chmod +x /usr/bin/clock
 chmod +x /usr/bin/openclash.sh
 chmod +x /usr/bin/cek_sms.sh
 chmod +x /usr/bin/mount_hdd
+chmod -x /etc/profile.d/30-sysinfo.sh
+
 
 # configurating openclash
 if opkg list-installed | grep luci-app-openclash > /dev/null; then
