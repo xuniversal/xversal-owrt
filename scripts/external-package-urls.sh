@@ -33,9 +33,9 @@ files1=(
     "luci-app-netspeedtest|https://fantastic-packages.github.io/packages/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "python3-speedtest-cli|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
     "librespeed-go|https://downloads.openwrt.org/releases/packages-$(echo "$BRANCH" | cut -d'.' -f1-2)/$ARCH_3/packages"
-    "luci-app-ramfree|https://dl.openwrt.ai/23.05/packages/$ARCH_3/kiddin9"
-    "nikki|https://dl.openwrt.ai/24.10/packages/$ARCH_3/kiddin9"
-    "luci-app-nikki|https://dl.openwrt.ai/24.10/packages/$ARCH_3/kiddin9"
+    "luci-app-ramfree|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
+    "nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
+    "luci-app-nikki|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
 )
 
 echo "###########################################################"
