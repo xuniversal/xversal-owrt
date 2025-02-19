@@ -42,7 +42,8 @@ elif [ "$2" == "openclash-passwall-neko" ]; then
 fi
 
 # 
-PACKAGES+=" mihomo luci-app-mihomo"
+# PACKAGES+=" mihomo luci-app-mihomo"
+PACKAGES+=" nikki luci-app-nikki"
 # luci-app-passwall2
 # Adguardhome
 PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools tailscale luci-app-tailscale"
