@@ -227,11 +227,12 @@ if grep -q "Raspberry Pi 4\|Raspberry Pi 3" /proc/cpuinfo; then
 fi
 
 if [ -f /etc/profile.d/30-sysinfo.sh ]; then
-    rm -f /etc/profile.d/30-sysinfo.sh
-    echo "File 30-sysinfo.sh telah dihapus."
+    mv /etc/profile.d/30-sysinfo.sh /etc/profile.d/30-sysinfo.sh.bak
+    echo "File 30-sysinfo.sh telah diganti menjadi 30-sysinfo.sh.bak."
 else
     echo "File 30-sysinfo.sh tidak ditemukan."
 fi
+
 
 # enable adguardhome
 chmod +x /usr/bin/adguardhome
