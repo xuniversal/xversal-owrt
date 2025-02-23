@@ -1,19 +1,29 @@
+bug:
+- &ava ava.game.naver.com
+- &vidio quiz.int.vidio.com
+- &zoom support.zoom.us
+
+server:
+- &server1 aio.unlimited.biz.id
+- &server2 aio.zipzap.biz.id
+- &server3 support.zoom.us.aio.loophole.biz.id
+
 proxies:
-- name: Akun-1-eth2
-  server: bug.com
+- name: (SG) Leaseweb Singapore ava 🇸🇬
+  server: *ava
   port: 443
   type: vless
-  uuid: 477450c6-0151-4ffc-9c46-67e20f8d5cc1
+  uuid: e89fa97a-113c-4e3a-b436-0dc3de59bdbf
   cipher: auto
   tls: true
   skip-cert-verify: true
-  udp: true
-  servername: server.com
+  udp: false
+  servername: *server1
   network: ws
   ws-opts:
-    path: /vless
+    path: /aioproxybot/167.253.158.63:2053
     headers:
-      Host: server.com
+      Host: *server1
   interface-name: eth2
 
 - name: Akun-2-eth2
