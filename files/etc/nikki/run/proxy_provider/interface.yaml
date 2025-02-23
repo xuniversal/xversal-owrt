@@ -1,4 +1,3 @@
-proxies:
 bug:
 - &ava ava.game.naver.com
 - &vidio quiz.int.vidio.com
