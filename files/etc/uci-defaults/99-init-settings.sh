@@ -188,7 +188,6 @@ chmod +x /usr/bin/clock
 chmod +x /usr/bin/openclash.sh
 chmod +x /usr/bin/cek_sms.sh
 chmod +x /usr/bin/mount_hdd
-chmod -x /etc/profile.d/30-sysinfo.sh
 
 
 # configurating openclash
@@ -225,6 +224,13 @@ fi
 # adding new line for enable i2c oled display
 if grep -q "Raspberry Pi 4\|Raspberry Pi 3" /proc/cpuinfo; then
   echo -e "\ndtparam=i2c1=on\ndtparam=spi=on\ndtparam=i2s=on" >> /boot/config.txt
+fi
+
+if [ -f /etc/profile.d/30-sysinfo.sh ]; then
+    rm -f /etc/profile.d/30-sysinfo.sh
+    echo "File 30-sysinfo.sh telah dihapus."
+else
+    echo "File 30-sysinfo.sh tidak ditemukan."
 fi
 
 # enable adguardhome
