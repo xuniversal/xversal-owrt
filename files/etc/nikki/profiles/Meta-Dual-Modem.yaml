@@ -206,7 +206,7 @@ proxy-groups:
 # ================= RP  ==================
 rule-providers:
 
-=========== RULES  ==================
+# =========== RULES  ==================
 rules:
 # AdBlock
 - GEOSITE,category-ads-all,IKLAN 🛡
