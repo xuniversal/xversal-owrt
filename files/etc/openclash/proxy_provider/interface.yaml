@@ -61,7 +61,7 @@ proxies:
       Host: *server3
   interface-name: eth1
 
-  - name: (ID) PT Pusat Media vid 🇮🇩
+- name: (ID) PT Pusat Media vid 🇮🇩
   server: *vidio
   port: 443
   type: vless
