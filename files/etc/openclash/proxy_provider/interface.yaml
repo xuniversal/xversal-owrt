@@ -1,19 +1,100 @@
 proxies:
-- name: Akun-1-eth1
-  server: bug.com
+bug:
+- &ava ava.game.naver.com
+- &vidio quiz.int.vidio.com
+- &zoom support.zoom.us
+
+server:
+- &server1 aio.unlimited.biz.id
+- &server2 aio.zipzap.biz.id
+- &server3 support.zoom.us.aio.loophole.biz.id
+
+proxies:
+- name: (SG) Leaseweb Singapore vid 🇸🇬
+  server: *vidio
   port: 443
   type: vless
-  uuid: 477450c6-0151-4ffc-9c46-67e20f8d5cc1
+  uuid: e89fa97a-113c-4e3a-b436-0dc3de59bdbf
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  udp: false
+  servername: *server1
+  network: ws
+  ws-opts:
+    path: /aioproxybot/167.253.158.63:2053
+    headers:
+      Host: *server1
+  interface-name: eth1
+
+- name: (SG) Softlayer zoom 🇸🇬
+  server: *zoom
+  port: 443
+  type: vless
+  uuid: 376918c9-954e-49f1-bf64-131ef7f00758
   cipher: auto
   tls: true
   skip-cert-verify: true
   udp: true
-  servername: server.com
+  servername: support.zoom.us.aio.sumbangsih.us.kg
   network: ws
   ws-opts:
-    path: /vless
+    path: /aioproxybot/119.81.201.154:9089
     headers:
-      Host: server.com
+      Host: support.zoom.us.aio.sumbangsih.us.kg
+  interface-name: eth1
+
+- name: (MY) Lightnode Limited vid 🇲🇾
+  server: *vidio
+  port: 443
+  type: vless
+  uuid: 376918c9-954e-49f1-bf64-131ef7f00758
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  udp: true
+  servername: *server3
+  network: ws
+  ws-opts:
+    path: /aioproxybot/154.90.39.188:48071
+    headers:
+      Host: *server3
+  interface-name: eth1
+
+  - name: (ID) PT Pusat Media vid 🇮🇩
+  server: *vidio
+  port: 443
+  type: vless
+  uuid: 376918c9-954e-49f1-bf64-131ef7f00758
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  udp: true
+  servername: *server3
+  network: ws
+  ws-opts:
+    path: /aioproxybot/103.6.207.108:8080
+    headers:
+      Host: *server3
+  interface-name: eth1
+
+- name: ss (ID) PT Pusat Media edu 🇮🇩
+  server: *vidio
+  type: ss
+  port: 443
+  cipher: none
+  password: bm9uZTo1NmI2MDNkOS1kY2YwLTQzMTAtYjJkZi1mNDI3ZDMyZGVkY2I
+  udp: true
+  plugin: v2ray-plugin
+  plugin-opts:
+     mode: websocket
+     host: *server3
+     tls: true
+     skip-cert-verify: true
+     path: /aioproxybot/167.253.158.63:2053
+     mux: false
+     headers:
+         custom: *server3
   interface-name: eth1
 
 - name: Akun-2-eth1
