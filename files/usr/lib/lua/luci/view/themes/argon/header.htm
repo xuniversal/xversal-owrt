@@ -185,6 +185,37 @@
 					</div>
 					<%- end -%>
 
+<!-- NAVBAR -->
+<div class="navbar">
+  <a href='/cgi-bin/luci/admin/services/openclash'>
+    <img src="<%=media%>/navbar/blackcat1.png" alt="OpenClash">
+  </a>
+  <a href='/cgi-bin/luci/admin/services/openclash/editor'>
+    <img src="<%=media%>/navbar/oceditor.png" alt="OpenClash Editor">
+  </a>
+  <a href='/cgi-bin/luci/admin/nas/tinyfm'>
+    <img src="<%=media%>/navbar/folder.png" alt="File Manager">
+  </a>
+  <a href='/cgi-bin/luci/admin/network/network'>
+    <img src="<%=media%>/navbar/network1.png" alt="Network Settings">
+  </a>
+  <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'>
+    <img src="<%=media%>/navbar/terminal.png" alt="Terminal">
+  </a>
+  <a href='/cgi-bin/luci/admin/status/netmon'>
+    <img src="<%=media%>/navbar/monitor1.png" alt="Network Monitor">
+  </a>
+  <img src="<%=media%>/navbar/cube1.png" id="yacd-icon" alt="YACD UI">
+  <img src="<%=media%>/navbar/chat.png" id="chatango-btn" alt="Chatango">
+</div>
+
+<!-- POPUP CHATANGO -->
+<div id="chatango-popup">
+  <button id="chatango-close" title="Close popup" aria-label="Close Chatango popup">&times;</button>
+  <iframe src="https://openwrt.chatango.com/"></iframe>
+</div>
+
+<!-- CSS STYLING -->
 <style>
   .navbar {
     display: flex;
@@ -197,24 +228,79 @@
     width: 45px;
     height: 45px;
     border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* Popup Chatango */
+  #chatango-popup {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 80vh;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    #chatango-popup {
+      width: 100vw;
+      height: 50vh;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
+  #chatango-popup iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  #chatango-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+
+  #chatango-close:hover {
+    color: #000;
   }
 </style>
 
-<div class="navbar">
-  <a href='/cgi-bin/luci/admin/services/openclash'><img src="<%=media%>/navbar/blackcat1.png"></a>
-  <a href='/cgi-bin/luci/admin/services/openclash/editor'><img src="<%=media%>/navbar/oceditor.png"></a>
-  <a href='/cgi-bin/luci/admin/nas/tinyfm'><img src="<%=media%>/navbar/folder.png"></a>
-  <a href='/cgi-bin/luci/admin/network/network'><img src="<%=media%>/navbar/network1.png"></a>
-  <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'><img src="<%=media%>/navbar/terminal.png"></a>
-  <a href='/cgi-bin/luci/admin/status/netmon'><img src="<%=media%>/navbar/monitor1.png"></a>
-  <img src="<%=media%>/navbar/cube1.png" id="yacd-icon">
-</div>
-
+<!-- JAVASCRIPT -->
 <script>
-  document.getElementById("yacd-icon").addEventListener("click", function () {
-    window.open(
-      "http://" + window.location.hostname + ":9090/ui/yacd/?hostname=" + window.location.hostname + "&port=9090&secret=123456"
-    );
+  document.addEventListener("DOMContentLoaded", function () {
+    const yacdIcon = document.getElementById("yacd-icon");
+    const chatangoBtn = document.getElementById("chatango-btn");
+    const chatangoPopup = document.getElementById("chatango-popup");
+    const chatangoClose = document.getElementById("chatango-close");
+
+    // Buka YACD di tab baru
+    yacdIcon.addEventListener("click", function () {
+      const host = window.location.hostname;
+      window.open(`http://${host}:9090/ui/yacd/?hostname=${host}&port=9090&secret=123456`, "_blank");
+    });
+
+    // Tampilkan popup Chatango
+    chatangoBtn.addEventListener("click", function () {
+      chatangoPopup.style.display = "block";
+    });
+
+    // Tutup popup Chatango
+    chatangoClose.addEventListener("click", function () {
+      chatangoPopup.style.display = "none";
+    });
   });
 </script>
 
