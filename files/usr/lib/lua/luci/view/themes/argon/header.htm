@@ -132,8 +132,6 @@
 	<script src="<%=resource%>/cbi.js?v=<%=ver.luciversion%>"></script>
 	<script src="<%=resource%>/luci.js?v=<%=ver.luciversion%>"></script>
 	<script src="<%=media%>/js/jquery.min.js?v=3.5.1"></script>
-	<script id="cid0020000381911355159" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 300px;height: 400px;">{"handle":"openwrt","arch":"js","styles":{"a":"404040","b":100,"c":"FFFFFF","d":"FFFFFF","k":"6666CC","l":"6666CC","m":"6666CC","n":"FFFFFF","p":"10","q":"6666CC","r":100,"pos":"br","cv":1,"cvfntw":"bold","cvbg":"6666CC","cvfg":"ffffff","cvw":200,"cvh":30,"ticker":1,"fwtickm":1}}</script>
-		
 </head>
 
 <body
@@ -186,42 +184,79 @@
 					<%- end -%>
 
 <!-- NAVBAR -->
-<div class="navbar">
-  <a href='/cgi-bin/luci/admin/services/openclash'>
-    <img src="<%=media%>/navbar/blackcat1.png" alt="OpenClash">
-  </a>
-  <a href='/cgi-bin/luci/admin/services/openclash/editor'>
-    <img src="<%=media%>/navbar/oceditor.png" alt="OpenClash Editor">
-  </a>
-  <a href='/cgi-bin/luci/admin/nas/tinyfm'>
-    <img src="<%=media%>/navbar/folder.png" alt="File Manager">
-  </a>
-  <a href='/cgi-bin/luci/admin/network/network'>
-    <img src="<%=media%>/navbar/network1.png" alt="Network Settings">
-  </a>
-  <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'>
-    <img src="<%=media%>/navbar/terminal.png" alt="Terminal">
-  </a>
-  <a href='/cgi-bin/luci/admin/status/netmon'>
-    <img src="<%=media%>/navbar/monitor1.png" alt="Network Monitor">
-  </a>
-  <img src="<%=media%>/navbar/cube1.png" id="yacd-icon" alt="YACD UI">
-  <img src="<%=media%>/navbar/chat.png" id="chatango-btn" alt="Chatango">
+<div class="navbar-container">
+  <div class="navbar">
+    <a href='/cgi-bin/luci/admin/services/openclash'>
+      <img src="<%=media%>/navbar/blackcat1.png" alt="OpenClash">
+    </a>
+    <a href='/cgi-bin/luci/admin/services/openclash/editor'>
+      <img src="<%=media%>/navbar/oceditor.png" alt="OpenClash Editor">
+    </a>
+    <a href='/cgi-bin/luci/admin/nas/tinyfm'>
+      <img src="<%=media%>/navbar/folder.png" alt="File Manager">
+    </a>
+    <a href='/cgi-bin/luci/admin/network/network'>
+      <img src="<%=media%>/navbar/network1.png" alt="Network Settings">
+    </a>
+    <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'>
+      <img src="<%=media%>/navbar/terminal.png" alt="Terminal">
+    </a>
+    <a href='/cgi-bin/luci/admin/status/netmon'>
+      <img src="<%=media%>/navbar/monitor1.png" alt="Network Monitor">
+    </a>
+    <img src="<%=media%>/navbar/cube1.png" id="yacd-icon" alt="YACD UI">
+    <img src="<%=media%>/navbar/chat.png" id="chatango-btn" alt="Chatango">
+  </div>
 </div>
 
 <!-- POPUP CHATANGO -->
 <div id="chatango-popup">
-  <button id="chatango-close" title="Close popup" aria-label="Close Chatango popup">&times;</button>
-  <iframe src="https://openwrt.chatango.com/"></iframe>
+  <div id="chatango-header">
+    <h3>Community Chat</h3>
+    <div>
+      <button id="chatango-refresh" title="Refresh Chatango" aria-label="Refresh Chatango">&#x21bb;</button>
+      <button id="chatango-close" title="Close popup" aria-label="Close Chatango popup">&times;</button>
+    </div>
+  </div>
+  <div id="chatango-loader">
+    <div class="spinner"></div>
+  </div>
+  <iframe id="chatango-frame" src="https://openwrt.chatango.com/"></iframe>
 </div>
+
 
 <!-- CSS STYLING -->
 <style>
+  /* Navbar Container */
+  .navbar-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: rgba(40, 40, 40, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 5px 0;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+  }
+  
+  /* Dark Mode Support */
+  @media (prefers-color-scheme: dark) {
+    .navbar-container {
+      background: rgba(40, 40, 40, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* Navbar Content */
   .navbar {
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center; /* Tambahkan ini untuk memastikan konten di tengah */
   }
 
   .navbar img {
@@ -229,6 +264,11 @@
     height: 45px;
     border-radius: 8px;
     cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .navbar img:hover {
+    transform: scale(1.1);
   }
 
   /* Popup Chatango */
@@ -250,7 +290,7 @@
   @media (max-width: 768px) {
     #chatango-popup {
       width: 100vw;
-      height: 50vh;
+      height: 80vh;
       border-radius: 0;
       box-shadow: none;
     }
@@ -258,33 +298,119 @@
 
   #chatango-popup iframe {
     width: 100%;
-    height: 100%;
+    height: 90%;
     border: none;
   }
 
-  #chatango-close {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 24px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: #333;
+/* Gaya baru untuk header popup */
+  #chatango-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background: #5e72e4; /* Warna tema Argon */
+    color: white;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
   }
 
-  #chatango-close:hover {
-    color: #000;
+  #chatango-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
   }
+
+  #chatango-header div {
+    display: flex;
+    gap: 5px;
+  }
+
+#chatango-refresh,
+#chatango-close {
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+#chatango-refresh:hover,
+#chatango-close:hover {
+  background: #e0e0e0;
+  color: #000;
+}
+
+#chatango-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: none;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
 
 <!-- JAVASCRIPT -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const yacdIcon = document.getElementById("yacd-icon");
     const chatangoBtn = document.getElementById("chatango-btn");
     const chatangoPopup = document.getElementById("chatango-popup");
     const chatangoClose = document.getElementById("chatango-close");
+    const chatangoFrame = document.getElementById("chatango-frame");
+    const chatangoRefresh = document.getElementById("chatango-refresh");
+
+chatangoRefresh.addEventListener("click", function () {
+  chatangoFrame.src = chatangoFrame.src; // Reload iframe
+});
+
+chatangoRefresh.addEventListener("click", function () {
+  const loader = document.getElementById("chatango-loader");
+  loader.style.display = "block"; // Tampilkan loading
+
+  // Paksa reload iframe
+  chatangoFrame.src = chatangoFrame.src;
+
+  // Sembunyikan loader setelah 1 detik
+  setTimeout(() => {
+    loader.style.display = "none";
+  }, 1000);
+});
+
+    // Fungsi untuk cek koneksi internet
+    function checkInternetConnection(callback) {
+      fetch("https://www.google.com/favicon.ico", { method: "HEAD", mode: "no-cors" })
+        .then(() => callback(true))
+        .catch(() => callback(false));
+    }
+
+    // Jalankan pengecekan internet
+    checkInternetConnection(function (isConnected) {
+      if (!isConnected) {
+        chatangoBtn.style.display = "none";
+      }
+    });
 
     // Buka YACD di tab baru
     yacdIcon.addEventListener("click", function () {
