@@ -12,6 +12,7 @@ elif [[ "$BASE" == "immortalwrt" ]]; then
     echo "$BASE"
 VERSION_MAJOR=$(echo "$BRANCH" | grep -oE '^[0-9]+' || echo "0")
 if [ "$VERSION_MAJOR" -ge 21 ] && [ "$PROFILE" == "rpi-4" ]; then
+fi
     echo "Running setup for version $BRANCH and profile $PROFILE"
     cp packages/luci-app-oled_1.0_all.ipk files/root/luci-app-oled_1.0_all.ipk
     sed -i '/# setup misc settings/ a\rm /root/luci-app-oled_1.0_all.ipk' files/etc/uci-defaults/99-init-settings.sh
