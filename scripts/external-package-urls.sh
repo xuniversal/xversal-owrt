@@ -23,11 +23,11 @@ files1=(
     "luci-app-argon-config|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
     "luci-theme-argon|https://downloads.immortalwrt.org/releases/packages-24.10/$ARCH_3/luci"
     #"sms-tool|https://downloads.openwrt.org/releases/packages-23.05/$ARCH_3/packages"
-    "luci-app-diskman|https://downloads.immortalwrt.org/releases/24.10.0/packages/$ARCH_3/luci"
-    "luci-app-disks-info|https://downloads.immortalwrt.org/releases/24.10.0/packages/$ARCH_3/luci"
-    "internet-detector|https://downloads.immortalwrt.org/releases/24.10.0/packages/$ARCH_3/packages"
-    "luci-app-internet-detector|https://downloads.immortalwrt.org/releases/24.10.0/packages/$ARCH_3/luci"
-    "internet-detector-mod-modem-restart|https://downloads.immortalwrt.org/releases/24.10.0/packages/$ARCH_3/packages"
+    "luci-app-diskman|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "luci-app-disks-info|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "internet-detector|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/packages"
+    "luci-app-internet-detector|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "internet-detector-mod-modem-restart|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/packages"
     
     #
     "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/24.10/packages/$ARCH_3/luci"
