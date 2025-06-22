@@ -28,6 +28,10 @@ files1=(
     "internet-detector|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/packages"
     "luci-app-internet-detector|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
     "internet-detector-mod-modem-restart|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/packages"
+    "luci-app-netspeedtest|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "luci-app-temp-status|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
+    "luci-app-log-viewer|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
     
     #
     "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/24.10/packages/$ARCH_3/luci"
