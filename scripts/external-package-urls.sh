@@ -32,7 +32,7 @@ files1=(
     "luci-app-temp-status|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
     "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
     "luci-app-log-viewer|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/luci"
-    "libuci20250120|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/base"
+    #"libuci20250120|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/base"
     
     #
     "luci-app-cpu-status-mini|https://fantastic-packages.github.io/packages/releases/24.10/packages/$ARCH_3/luci"
