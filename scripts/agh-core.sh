@@ -16,39 +16,45 @@ declare -A arch_map=(
 ARCH_RAW=$(uname -m)
 ARCH_1=${arch_map[$ARCH_RAW]}
 
-# Validasi dukungan
+# Validasi arsitektur
 if [[ -z "$ARCH_1" ]]; then
   echo "Error: Unsupported architecture: $ARCH_RAW"
   exit 1
 fi
 
-# Ambil versi terbaru dan URL file dari GitHub API
-agh_api="https://api.github.com/repos/AdguardTeam/AdGuardHome/releases"
+# Ambil JSON rilisan terbaru dari GitHub API
+agh_api="https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest"
+release_json=$(curl -sSL "$agh_api")
+
+# Ekstrak versi dan URL download
+latest_version=$(echo "$release_json" | grep -oP '"tag_name":\s*"\K(v[0-9]+\.[0-9]+\.[0-9]+)')
 agh_file="AdGuardHome_linux_${ARCH_1}"
-agh_file_down=$(curl -s "${agh_api}/latest" | grep "browser_download_url" | grep -oE "https.*${agh_file}.*\.tar\.gz" | head -n 1)
-latest_version=$(curl -sSL "$agh_api/latest" | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n 1)
+agh_file_url=$(echo "$release_json" | grep -oP '"browser_download_url":\s*"\K(https.*'"$agh_file"'.*?\.tar\.gz)')
 
 echo "Detected architecture: $ARCH_RAW → $ARCH_1"
-echo "Resolved download URL: $agh_file_down"
+echo "Resolved download URL: $agh_file_url"
 echo "AdGuardHome version: $latest_version"
 
-# Proses download dan ekstrak
-if [[ -n "$agh_file_down" ]]; then
+# Cek dan unduh file jika URL tersedia
+if [[ -n "$agh_file_url" ]]; then
   mkdir -p files/opt
-  if wget -nv "$agh_file_down" -P files/opt; then
+  if wget -nv "$agh_file_url" -P files/opt; then
     echo "Extracting AdGuardHome..."
     if tar -zxvf "files/opt/${agh_file}.tar.gz" -C files/opt; then
       rm "files/opt/${agh_file}.tar.gz"
-      echo "Done! Installed AdGuardHome version $latest_version for architecture $ARCH_1"
+      echo "✅ Done! Installed AdGuardHome version $latest_version for architecture $ARCH_1"
     else
-      echo "Error: Failed to extract AdGuardHome."
+      echo "❌ Error: Failed to extract AdGuardHome."
       exit 1
     fi
   else
-    echo "Error: Failed to download AdGuardHome."
+    echo "❌ Error: Failed to download AdGuardHome."
     exit 1
   fi
 else
-  echo "Error: Could not resolve AdGuardHome download URL."
+  echo "❌ Error: Could not resolve AdGuardHome download URL."
+  echo "💡 Tips:"
+  echo "- Periksa apakah GitHub API terblokir atau melebihi rate limit."
+  echo "- Atau coba hardcode versi tertentu jika perlu."
   exit 1
 fi
