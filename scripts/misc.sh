@@ -14,9 +14,9 @@ elif [[ "$BASE" == "immortalwrt" ]]; then
     if [ "$VERSION_MAJOR" -ge 21 ] && [ "$PROFILE" == "rpi-4" ]; then
         echo "Running setup for version $BRANCH and profile $PROFILE"
 
-        cp packages/luci-app-oled_1.0_all.ipk files/root/luci-app-oled_1.0_all.ipk
-        sed -i '/# setup misc settings/ a\rm /root/luci-app-oled_1.0_all.ipk' files/etc/uci-defaults/99-init-settings.sh
-        sed -i '/# setup misc settings/ a\opkg install /root/luci-app-oled_1.0_all.ipk --force-downgrade' files/etc/uci-defaults/99-init-settings.sh
+        cp packages/luci-app-oled_1.1_all.ipk files/root/luci-app-oled_1.1_all.ipk
+        sed -i '/# setup misc settings/ a\rm /root/luci-app-oled_1.1_all.ipk' files/etc/uci-defaults/99-init-settings.sh
+        sed -i '/# setup misc settings/ a\opkg install /root/luci-app-oled_1.1_all.ipk --force-downgrade' files/etc/uci-defaults/99-init-settings.sh
     fi
 
     if [ "$(echo "$BRANCH" | cut -d'.' -f1)" == "21" ] || [ "$TYPE" == "AMLOGIC" ] || [ "$ROOTFS_SQUASHFS" == "true" ]; then
@@ -35,9 +35,9 @@ elif [[ "$BASE" == "immortalwrt" ]]; then
     if [ "$TARGET" == "Raspberry Pi 4B" ]; then
         echo "$TARGET"
     elif [ "$TARGET" == "x86-64" ]; then
-        rm packages/luci-app-oled_1.0_all.ipk
+        rm packages/luci-app-oled_1.1_all.ipk
     else
-        rm packages/luci-app-oled_1.0_all.ipk
+        rm packages/luci-app-oled_1.1_all.ipk
     fi
 
     if [ "$TYPE" == "AMLOGIC" ]; then
