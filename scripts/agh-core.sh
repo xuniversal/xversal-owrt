@@ -53,8 +53,5 @@ if [[ -n "$agh_file_url" ]]; then
   fi
 else
   echo "❌ Error: Could not resolve AdGuardHome download URL."
-  echo "💡 Tips:"
-  echo "- Periksa apakah GitHub API terblokir atau melebihi rate limit."
-  echo "- Atau coba hardcode versi tertentu jika perlu."
   exit 1
 fi
