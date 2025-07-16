@@ -10,7 +10,7 @@ files1=(
     #"modemmanager|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
     #"libmbim|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
     #"libqmi|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
-    "sms-tool|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
+    #"sms-tool|https://downloads.openwrt.org/snapshots/packages/$ARCH_3/packages"
     "luci-proto-modemmanager|https://downloads.openwrt.org/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "luci-proto-mbim|https://downloads.openwrt.org/releases/$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/luci"
     "modemmanager|https://downloads.openwrt.org/releases/p$(echo "$BRANCH" | cut -d'.' -f1-2)/packages/$ARCH_3/packages"
@@ -36,6 +36,7 @@ files1=(
     
     #"libuci20250120|https://fantastic-packages.github.io/packages/releases/24.10/packages/aarch64_generic/base"
 
+    "sms-tool|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
     "luci-app-diskman|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
     "luci-app-disks-info|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
     "internet-detector|https://dl.openwrt.ai/releases/24.10/packages/$ARCH_3/kiddin9"
