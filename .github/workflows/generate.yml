@@ -40,7 +40,7 @@ on:
       tunnel:
         description: "Select VPN Client app (!neko and passwall only support for newer branch with fw4 firewall!):"
         required: true
-        default: "all"
+        default: "openclash-passwall"
         type: choice
         options:
           - all
