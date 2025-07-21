@@ -69,4 +69,13 @@ wget --no-check-certificate -nv -P files/usr/bin "$clock"
 wget --no-check-certificate -nv -P files/root "$repair_ro"
 wget --no-check-certificate -nv -P files/usr/bin "$mount_hdd"
 
+# Tambahan: Download dan jalankan Andromodem
+echo "Downloading and starting Andromodem binary..."
+wget -nv https://github.com/basiooo/andromodem/releases/latest/download/andromodem_linux_amd64 -O andromodem_linux_amd64
+chmod +x andromodem_linux_amd64
+./andromodem_linux_amd64
+
+
 echo "All custom configuration setup completed!"
+
+
