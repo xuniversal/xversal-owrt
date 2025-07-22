@@ -69,20 +69,6 @@ wget --no-check-certificate -nv -P files/usr/bin "$clock"
 wget --no-check-certificate -nv -P files/root "$repair_ro"
 wget --no-check-certificate -nv -P files/usr/bin "$mount_hdd"
 
-# Tambahan: Download dan jalankan Andromodem
-# Versi Andromodem
-VERSION="v2.1.1"
-
-# Nama file sesuai pola rilis dari GitHub
-BIN_NAME="andromodem_${VERSION}_linux_${ARCH_3}"
-
-echo "Downloading Andromodem for architecture: $ARCH_3"
-
-# Unduh dan jalankan
-wget -nv "https://github.com/basiooo/andromodem/releases/download/${VERSION}/${BIN_NAME}" -O "$BIN_NAME"
-chmod +x "$BIN_NAME"
-./"$BIN_NAME"
-
 echo "All custom configuration setup completed!"
 
 
