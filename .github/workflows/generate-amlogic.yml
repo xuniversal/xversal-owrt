@@ -32,6 +32,7 @@ on:
           - all
           - soc-s912
           - soc-s905x
+          - soc-s905x-b860h
           - soc-s905x2
           - soc-s905x3
           - nanopi-r5s
@@ -193,6 +194,9 @@ jobs:
               ;;
             soc-s905x)
               openwrt_board="s905x"
+              ;;
+            soc-s905x-b860h)
+              openwrt_board="s905x-b860h"
               ;;
             soc-s912)
               openwrt_board="s912"
