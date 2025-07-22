@@ -70,10 +70,35 @@ wget --no-check-certificate -nv -P files/root "$repair_ro"
 wget --no-check-certificate -nv -P files/usr/bin "$mount_hdd"
 
 # Tambahan: Download dan jalankan Andromodem
-echo "Downloading and starting Andromodem binary..."
-wget -nv https://github.com/basiooo/andromodem/releases/latest/download/andromodem_linux_amd64 -O andromodem_linux_amd64
-chmod +x andromodem_linux_amd64
-./andromodem_linux_amd64
+echo "Detecting architecture for Andromodem..."
+
+ARCH=$(uname -m)
+VERSION="v2.1.1"
+BIN_NAME=""
+
+case "$ARCH" in
+    x86_64)
+        BIN_NAME="andromodem_${VERSION}_linux_amd64"
+        ;;
+    i386|i686)
+        BIN_NAME="andromodem_${VERSION}_linux_386"
+        ;;
+    armv7l|armv6l)
+        BIN_NAME="andromodem_${VERSION}_linux_arm"
+        ;;
+    aarch64)
+        BIN_NAME="andromodem_${VERSION}_linux_arm64"
+        ;;
+    *)
+        echo "Unsupported architecture: $ARCH"
+        exit 1
+        ;;
+esac
+
+echo "Downloading Andromodem binary for $ARCH ($BIN_NAME)..."
+wget -nv "https://github.com/basiooo/andromodem/releases/download/${VERSION}/${BIN_NAME}" -O "$BIN_NAME"
+chmod +x "$BIN_NAME"
+./"$BIN_NAME"
 
 
 echo "All custom configuration setup completed!"
