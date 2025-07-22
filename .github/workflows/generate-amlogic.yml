@@ -31,12 +31,12 @@ on:
       target:
         description: "Select device board"
         required: false
-        default: "s905x"
+        default: "s905x-b860h"
         type: choice
         options:
           - all
           - soc-s912
-          - s905x-p212
+          - s905x-b860h
           - soc-s905x2
           - soc-s905x3
           - nanopi-r5s
