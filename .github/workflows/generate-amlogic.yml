@@ -46,6 +46,7 @@ on:
           - 5.4.1_5.10.1
           - 5.15.1_6.1.1
           - 5.4.1
+          - 5.4.2
           - 5.10.1
           - 5.15.1
           - 6.1.1
@@ -196,10 +197,10 @@ jobs:
               openwrt_board="s905x"
               ;;
             hg680p | b860h)
-              openwrt_board="b860h"
+              openwrt_board="s905x-b860h"
               ;;
             p212)
-              openwrt_board="p212"
+              openwrt_board="s905x-p212"
               ;;  
             soc-s912)
               openwrt_board="s912"
