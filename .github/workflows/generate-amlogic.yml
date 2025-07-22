@@ -35,10 +35,10 @@ on:
         type: choice
         options:
           - all
-          - s912
-          - s905x
-          - s905x2
-          - s905x3
+          - soc-s912
+          - s905x-p212
+          - soc-s905x2
+          - soc-s905x3
           - nanopi-r5s
       openwrt_kernel:
         description: "Select kernel version"
