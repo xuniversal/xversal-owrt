@@ -43,14 +43,6 @@ armv7 https://github.com/lrdrdn/my-opkg-repo/raw/main/aarch64_cortex-a53/atinout
 armv8 https://github.com/lrdrdn/my-opkg-repo/raw/main/aarch64_generic/atinout_0.9.1_aarch64_generic.ipk
 x86 https://github.com/lrdrdn/my-opkg-repo/raw/main/x86_64/atinout_0.9.1_x86_64.ipk
 amlogic https://github.com/lrdrdn/my-opkg-repo/raw/main/aarch64_generic/atinout_0.9.1_aarch64_generic.ipk
-armv7 https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/quickstart_0.7.12-60_aarch64_cortex-a53.ipk
-armv8 https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/quickstart_0.7.12-60_aarch64_generic.ipk
-x86 https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/quickstart_0.7.12-60_x86_64.ipk
-amlogic https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/quickstart_0.7.12-60_aarch64_generic.ipk
-arm64 https://dl.openwrt.ai/packages-24.10/aarch64_cortex-a72/kiddin9/quickstart_0.10.5-r19_aarch64_cortex-a72.ipk
-amlogic https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/luci-app-quickstart_1.0.2-20230817_all.ipk
-all-all https://github.com/animegasan/luci-app-quickstart/releases/download/1.0.2/luci-app-quickstart_1.0.2-20230817_all.ipk
-arm64 https://dl.openwrt.ai/packages-23.05/aarch64_cortex-a72/packages/docker-compose_2.18.1-1_aarch64_cortex-a72.ipk
 #
 #
 amlogic https://github.com/zonevona/my-opkg-repo/raw/main/aarch64_generic/mihomo_2024.10.20~3e966e82-r3_aarch64_generic.ipk
