@@ -31,6 +31,7 @@ on:
         options:
           - all
           - soc-s912
+          - hg680p
           - soc-s905x
           - soc-s905x2
           - soc-s905x3
@@ -191,9 +192,15 @@ jobs:
             all)
               openwrt_board="all"
               ;;
-            soc-s905x | hg680p | b860h)
+            soc-s905x)
               openwrt_board="s905x"
               ;;
+            hg680p | b860h)
+              openwrt_board="b860h"
+              ;;
+            p212)
+              openwrt_board="p212"
+              ;;  
             soc-s912)
               openwrt_board="s912"
               ;;
