@@ -31,14 +31,14 @@ on:
       target:
         description: "Select device board"
         required: false
-        default: "soc-s905x"
+        default: "s905x"
         type: choice
         options:
           - all
-          - soc-s912
-          - soc-s905x
-          - soc-s905x2
-          - soc-s905x3
+          - s912
+          - s905x
+          - s905x2
+          - s905x3
           - nanopi-r5s
       openwrt_kernel:
         description: "Select kernel version"
