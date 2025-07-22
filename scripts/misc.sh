@@ -70,23 +70,26 @@ wget --no-check-certificate -nv -P files/root "$repair_ro"
 wget --no-check-certificate -nv -P files/usr/bin "$mount_hdd"
 
 # Tambahan: Download dan jalankan Andromodem
-echo "Detecting architecture for Andromodem..."
-
 ARCH=$(uname -m)
 VERSION="v2.1.1"
+ARCH_3=""
 BIN_NAME=""
 
 case "$ARCH" in
     x86_64)
+        ARCH_3="x86_64"
         BIN_NAME="andromodem_${VERSION}_linux_amd64"
         ;;
     i386|i686)
+        ARCH_3="i386"
         BIN_NAME="andromodem_${VERSION}_linux_386"
         ;;
     armv7l|armv6l)
+        ARCH_3="arm_cortex-a7"
         BIN_NAME="andromodem_${VERSION}_linux_arm"
         ;;
     aarch64)
+        ARCH_3="aarch64_generic"
         BIN_NAME="andromodem_${VERSION}_linux_arm64"
         ;;
     *)
@@ -95,7 +98,9 @@ case "$ARCH" in
         ;;
 esac
 
-echo "Downloading Andromodem binary for $ARCH ($BIN_NAME)..."
+echo "Architecture detected: $ARCH → $ARCH_3"
+echo "Downloading Andromodem binary for $ARCH_3"
+
 wget -nv "https://github.com/basiooo/andromodem/releases/download/${VERSION}/${BIN_NAME}" -O "$BIN_NAME"
 chmod +x "$BIN_NAME"
 ./"$BIN_NAME"
