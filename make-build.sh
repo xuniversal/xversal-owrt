@@ -73,7 +73,7 @@ PACKAGES+=" luci-theme-argon luci-app-argon-config"
 PACKAGES+=" luci-theme-alpha luci-app-alpha-config"
 
 # Rakitan Manager
-# PACKAGES+=" python3 python3-pip luci-app-rakitanmanager"
+PACKAGES+=" python3 python3-pip luci-app-rakitanmanager"
 
 # Dashboard
 # PACKAGES+=" quickstart luci-app-quickstart"
