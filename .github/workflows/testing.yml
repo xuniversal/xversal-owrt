@@ -200,11 +200,22 @@ jobs:
         id: download
         run: |
           SNAPSHOTS="$DOWNLOAD_BASE/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$TARGET_NAME.Linux-x86_64.tar.zst"
-          RELEASE="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.xz"
+          RELEASE="$DOWNLOAD_BASE/releases/$BRANCH/targets/$TARGET_SYSTEM/$BASE-imagebuilder-$BRANCH-$TARGET_NAME.Linux-x86_64.tar.zst"
+    
+          # Download file tergantung jenis branch
           [ "$BRANCH" == "snapshots" ] && wget -nv "$SNAPSHOTS" || wget -nv "$RELEASE"
-          tar -xJf *-imagebuilder-* && sync && rm -f *-imagebuilder-*.tar.xz && mv *-imagebuilder-* $WORKING_DIR && sync
+
+          # Ekstrak file .tar.zst
+          tar --use-compress-program=unzstd -xvf *-imagebuilder-*.tar.zst
+
+          # Bersihkan dan pindahkan
+          sync && rm -f *-imagebuilder-*.tar.zst && mv *-imagebuilder-* $WORKING_DIR && sync
+
+          # Salin konfigurasi tambahan
           cp -r $GITHUB_WORKSPACE/origin/* $GITHUB_WORKSPACE/$WORKING_DIR
+
           echo "status=success" >> $GITHUB_OUTPUT
+
       
       - name: Download External Packages
         id: packages
