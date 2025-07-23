@@ -1,0 +1,1 @@
+console=tty1 console=serial0,115200 root=PARTUUID=dae66543-02 rootfstype=squashfs,ext4 rootwait
