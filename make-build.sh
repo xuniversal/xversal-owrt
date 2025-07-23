@@ -18,7 +18,7 @@ kmod-usb-uhci kmod-usb2 kmod-usb-ehci kmod-usb-net-ipheth usbmuxd libusbmuxd-uti
 kmod-phy-broadcom kmod-phylib-broadcom kmod-tg3"
 
 # Modem Tools
-PACKAGES+=" modeminfo luci-app-modeminfo atinout modemband luci-app-modemband luci-app-mmconfig sms-tool luci-app-sms-tool-js luci-app-lite-watchdog luci-app-3ginfo-lite picocom minicom"
+PACKAGES+=" modeminfo luci-app-modeminfo atinout modemband luci-app-modemband luci-app-mmconfig sms-tool luci-app-lite-watchdog picocom minicom"
 
 # Tunnel option
 OPENCLASH_FW3="coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap libcap-bin ruby ruby-yaml kmod-tun unzip luci-compat luci luci-base luci-app-openclash"
@@ -43,10 +43,11 @@ fi
 
 # 
 # PACKAGES+=" mihomo luci-app-mihomo"
-PACKAGES+=" nikki luci-app-nikki yq"
+# PACKAGES+=" nikki luci-app-nikki yq"
 # luci-app-passwall2
 # Adguardhome
-PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools tailscale luci-app-tailscale"
+PACKAGES+=" luci-app-adguardhome ca-certificates ca-bundle tar unzip bind-tools"
+# PACKAGES+=" tailscale luci-app-tailscale"
 
 # NAS and Hard disk tools
 PACKAGES+=" luci-app-diskman luci-app-hd-idle luci-app-disks-info smartmontools kmod-usb-storage kmod-usb-storage-uas ntfs-3g"
@@ -72,7 +73,7 @@ PACKAGES+=" luci-theme-argon luci-app-argon-config"
 PACKAGES+=" luci-theme-alpha luci-app-alpha-config"
 
 # Rakitan Manager
-PACKAGES+=" python3 python3-pip luci-app-rakitanmanager"
+# PACKAGES+=" python3 python3-pip luci-app-rakitanmanager"
 
 # Dashboard
 # PACKAGES+=" quickstart luci-app-quickstart"
