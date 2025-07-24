@@ -70,13 +70,24 @@ jobs:
       - name: Download and Extract ImageBuilder
         run: |
           BASE_URL="https://downloads.openwrt.org/releases"
-          FILE_NAME="openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64.tar.xz"
-          FULL_URL="$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}/$FILE_NAME"
+          FILE_BASE="openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64"
+          TARGET_PATH="$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}"
 
-          echo "Downloading: $FULL_URL"
-          wget -nv "$FULL_URL"
-          tar -xJf "$FILE_NAME"
-          rm -f "$FILE_NAME"
+          echo "Trying to download .tar.xz..."
+          if wget -nv "$TARGET_PATH/$FILE_BASE.tar.xz"; then
+            echo "Extracting .tar.xz..."
+            tar -xJf "$FILE_BASE.tar.xz"
+            rm -f "$FILE_BASE.tar.xz"
+          elif wget -nv "$TARGET_PATH/$FILE_BASE.tar.zst"; then
+            echo "Fallback to .tar.zst..."
+            sudo apt-get update -qq
+            sudo apt-get install -y zstd
+            tar --use-compress-program=unzstd -xf "$FILE_BASE.tar.zst"
+            rm -f "$FILE_BASE.tar.zst"
+          else
+            echo "❌ Error: ImageBuilder file not found for $FILE_BASE"
+            exit 1
+          fi
 
           IB_DIR=$(find . -maxdepth 1 -type d -name "*imagebuilder*")
           echo "IB_DIR=$IB_DIR" >> $GITHUB_ENV
