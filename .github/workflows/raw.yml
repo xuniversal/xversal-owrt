@@ -1,4 +1,4 @@
-name: Build OpenWrt Firmware (Vanilla)
+name: Build OpenWrt Vanilla Firmware
 
 on:
   workflow_dispatch:
@@ -32,14 +32,14 @@ jobs:
     name: Build ${{ inputs.target }} - ${{ inputs.release_branch }}
 
     steps:
-      - name: Set Environment
+      - name: Set Environment Variables
         run: |
-          TARGET=${{ inputs.target }}
-          BRANCH=${{ inputs.release_branch }}
+          TARGET="${{ inputs.target }}"
+          BRANCH="${{ inputs.release_branch }}"
           echo "TARGET=$TARGET" >> $GITHUB_ENV
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
-          # Target-specific settings
+          # Set device-specific variables
           if [ "$TARGET" == "x86-64" ]; then
             echo "PROFILE=generic" >> $GITHUB_ENV
             echo "TARGET_SYSTEM=x86/64" >> $GITHUB_ENV
@@ -52,30 +52,41 @@ jobs:
             echo "PROFILE=rpi-4" >> $GITHUB_ENV
             echo "TARGET_SYSTEM=bcm27xx/bcm2711" >> $GITHUB_ENV
             echo "TARGET_NAME=bcm27xx-bcm2711" >> $GITHUB_ENV
+          else
+            echo "Unsupported target: $TARGET"
+            exit 1
           fi
 
-      - name: Install Dependencies
+      - name: Install Build Dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip tar gzip
+          sudo apt-get install -y \
+            build-essential \
+            libncurses5-dev libncursesw5-dev \
+            zlib1g-dev gawk git gettext \
+            libssl-dev xsltproc wget \
+            unzip tar gzip
 
       - name: Download and Extract ImageBuilder
         run: |
-          BASE_URL=https://downloads.openwrt.org/releases
-          FILE_NAME=openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64.tar.xz
-          URL=$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}/$FILE_NAME
+          BASE_URL="https://downloads.openwrt.org/releases"
+          FILE_NAME="openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64.tar.xz"
+          FULL_URL="$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}/$FILE_NAME"
 
-          wget -nv $URL
-          tar -xJf $FILE_NAME
-          rm -f $FILE_NAME
-          echo "IB_DIR=$(find . -maxdepth 1 -type d -name '*imagebuilder*')" >> $GITHUB_ENV
+          echo "Downloading: $FULL_URL"
+          wget -nv "$FULL_URL"
+          tar -xJf "$FILE_NAME"
+          rm -f "$FILE_NAME"
 
-      - name: Build Vanilla OpenWrt Image
+          IB_DIR=$(find . -maxdepth 1 -type d -name "*imagebuilder*")
+          echo "IB_DIR=$IB_DIR" >> $GITHUB_ENV
+
+      - name: Build Vanilla Image
         run: |
-          cd $IB_DIR
-          make image PROFILE=${{ env.PROFILE }}
+          cd "$IB_DIR"
+          make image PROFILE="${{ env.PROFILE }}"
 
-      - name: Upload Firmware
+      - name: Upload Firmware Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: openwrt-${{ env.TARGET_NAME }}-${{ env.BRANCH }}
