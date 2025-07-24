@@ -1,4 +1,4 @@
-name: Build OpenWrt Vanilla Firmware
+name: OpenWrt Custom Firmware Builder
 
 on:
   workflow_dispatch:
@@ -13,18 +13,34 @@ on:
           - Raspberry Pi 3B
           - Raspberry Pi 4B
       release_branch:
-        description: "OpenWrt Release Version"
+        description: "OpenWrt Version"
         required: true
         default: "24.10.2"
         type: choice
         options:
           - 21.02.7
-          - 22.03.6
-          - 23.05.3
           - 23.05.5
           - 24.10.0
           - 24.10.2
           - snapshots
+      tunnel:
+        description: "VPN Client"
+        required: true
+        default: "no-tunnel"
+        type: choice
+        options:
+          - no-tunnel
+          - openclash
+          - passwall
+          - neko
+          - openclash-passwall
+          - openclash-passwall-neko
+          - all
+      clean:
+        description: "Run make clean"
+        required: false
+        default: "true"
+        type: boolean
 
 jobs:
   build:
@@ -36,10 +52,15 @@ jobs:
         run: |
           TARGET="${{ inputs.target }}"
           BRANCH="${{ inputs.release_branch }}"
+          TUNNEL="${{ inputs.tunnel }}"
+          CLEAN="${{ inputs.clean }}"
+
           echo "TARGET=$TARGET" >> $GITHUB_ENV
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+          echo "TUNNEL=$TUNNEL" >> $GITHUB_ENV
+          echo "CLEAN=$CLEAN" >> $GITHUB_ENV
+          echo "TZ=Asia/Jakarta" >> $GITHUB_ENV
 
-          # Set device-specific variables
           if [ "$TARGET" == "x86-64" ]; then
             echo "PROFILE=generic" >> $GITHUB_ENV
             echo "TARGET_SYSTEM=x86/64" >> $GITHUB_ENV
@@ -52,53 +73,86 @@ jobs:
             echo "PROFILE=rpi-4" >> $GITHUB_ENV
             echo "TARGET_SYSTEM=bcm27xx/bcm2711" >> $GITHUB_ENV
             echo "TARGET_NAME=bcm27xx-bcm2711" >> $GITHUB_ENV
-          else
-            echo "Unsupported target: $TARGET"
-            exit 1
           fi
 
       - name: Install Build Dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y \
-            build-essential \
-            libncurses5-dev libncursesw5-dev \
-            zlib1g-dev gawk git gettext \
-            libssl-dev xsltproc wget \
-            unzip tar gzip
+            build-essential libncurses5-dev libncursesw5-dev \
+            zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip \
+            tar gzip rsync zstd
 
-      - name: Download and Extract ImageBuilder
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          path: origin
+
+      - name: Download ImageBuilder (.xz or .zst)
         run: |
           BASE_URL="https://downloads.openwrt.org/releases"
           FILE_BASE="openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64"
           TARGET_PATH="$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}"
 
-          echo "Trying to download .tar.xz..."
+          echo "Attempting to download .tar.xz..."
           if wget -nv "$TARGET_PATH/$FILE_BASE.tar.xz"; then
-            echo "Extracting .tar.xz..."
             tar -xJf "$FILE_BASE.tar.xz"
             rm -f "$FILE_BASE.tar.xz"
           elif wget -nv "$TARGET_PATH/$FILE_BASE.tar.zst"; then
-            echo "Fallback to .tar.zst..."
-            sudo apt-get update -qq
-            sudo apt-get install -y zstd
             tar --use-compress-program=unzstd -xf "$FILE_BASE.tar.zst"
             rm -f "$FILE_BASE.tar.zst"
           else
-            echo "❌ Error: ImageBuilder file not found for $FILE_BASE"
+            echo "❌ ImageBuilder not found!"
             exit 1
           fi
 
           IB_DIR=$(find . -maxdepth 1 -type d -name "*imagebuilder*")
           echo "IB_DIR=$IB_DIR" >> $GITHUB_ENV
 
-      - name: Build Vanilla Image
+          # Copy scripts and files from the checked out repo to ImageBuilder dir
+          cp origin/make-build.sh "$IB_DIR/"
+          cp origin/external-package-urls.sh "$IB_DIR/"
+          cp -r origin/scripts "$IB_DIR/" || true
+          cp -r origin/files "$IB_DIR/" || true
+
+      - name: Download Custom Packages
         run: |
           cd "$IB_DIR"
-          make image PROFILE="${{ env.PROFILE }}"
+          mkdir -p packages
+          if [ -f external-package-urls.sh ]; then
+            bash external-package-urls.sh > output_url.txt
+            wget --no-check-certificate -i output_url.txt -nv -P packages || true
+          fi
 
-      - name: Upload Firmware Artifacts
+      - name: Apply Patches and DIY Scripts
+        run: |
+          cd "$IB_DIR"
+          bash scripts/builder-patch.sh || true
+          bash scripts/misc.sh || true
+          bash scripts/agh-core.sh || true
+          if [[ "$TUNNEL" == *openclash* ]]; then bash scripts/clash-core.sh; fi
+          if [[ "$TUNNEL" == *neko* ]]; then bash scripts/neko_core.sh; fi
+
+      - name: Build Firmware
+        run: |
+          cd "$IB_DIR"
+          mkdir -p compiled
+          if [ "$CLEAN" == "true" ]; then make clean; fi
+
+          if [ "$TUNNEL" == "all" ]; then
+            for t in openclash passwall neko openclash-passwall openclash-passwall-neko no-tunnel; do
+              echo ">> Building with VPN Client: $t"
+              bash ./make-build.sh "${{ env.PROFILE }}" "$t"
+              mv bin/targets/${{ env.TARGET_SYSTEM }}/*.img.gz compiled/OpenWrt-${t}.img.gz || true
+            done
+          else
+            echo ">> Building with VPN Client: $TUNNEL"
+            bash ./make-build.sh "${{ env.PROFILE }}" "$TUNNEL"
+            mv bin/targets/${{ env.TARGET_SYSTEM }}/*.img.gz compiled/OpenWrt-${TUNNEL}.img.gz || true
+          fi
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: openwrt-${{ env.TARGET_NAME }}-${{ env.BRANCH }}
-          path: ${{ env.IB_DIR }}/bin/targets/${{ env.TARGET_SYSTEM }}/*
+          name: OpenWrt-${{ env.TARGET_NAME }}-${{ env.BRANCH }}
+          path: ${{ env.IB_DIR }}/compiled/*
