@@ -13,15 +13,17 @@ on:
           - Raspberry Pi 3B
           - Raspberry Pi 4B
       release_branch:
-        description: "OpenWrt Release Branch"
+        description: "OpenWrt Release Version"
         required: true
-        default: "23.05.3"
+        default: "24.10.2"
         type: choice
         options:
           - 21.02.7
           - 22.03.6
           - 23.05.3
           - 23.05.5
+          - 24.10.0
+          - 24.10.2
           - snapshots
 
 jobs:
@@ -37,7 +39,7 @@ jobs:
           echo "TARGET=$TARGET" >> $GITHUB_ENV
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
-          # Set target-specific variables
+          # Target-specific settings
           if [ "$TARGET" == "x86-64" ]; then
             echo "PROFILE=generic" >> $GITHUB_ENV
             echo "TARGET_SYSTEM=x86/64" >> $GITHUB_ENV
