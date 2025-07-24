@@ -1,0 +1,80 @@
+name: Build OpenWrt Firmware (Vanilla)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Target device"
+        required: true
+        default: "x86-64"
+        type: choice
+        options:
+          - x86-64
+          - Raspberry Pi 3B
+          - Raspberry Pi 4B
+      release_branch:
+        description: "OpenWrt Release Branch"
+        required: true
+        default: "23.05.3"
+        type: choice
+        options:
+          - 21.02.7
+          - 22.03.6
+          - 23.05.3
+          - 23.05.5
+          - snapshots
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build ${{ inputs.target }} - ${{ inputs.release_branch }}
+
+    steps:
+      - name: Set Environment
+        run: |
+          TARGET=${{ inputs.target }}
+          BRANCH=${{ inputs.release_branch }}
+          echo "TARGET=$TARGET" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+
+          # Set target-specific variables
+          if [ "$TARGET" == "x86-64" ]; then
+            echo "PROFILE=generic" >> $GITHUB_ENV
+            echo "TARGET_SYSTEM=x86/64" >> $GITHUB_ENV
+            echo "TARGET_NAME=x86-64" >> $GITHUB_ENV
+          elif [ "$TARGET" == "Raspberry Pi 3B" ]; then
+            echo "PROFILE=rpi-3" >> $GITHUB_ENV
+            echo "TARGET_SYSTEM=bcm27xx/bcm2710" >> $GITHUB_ENV
+            echo "TARGET_NAME=bcm27xx-bcm2710" >> $GITHUB_ENV
+          elif [ "$TARGET" == "Raspberry Pi 4B" ]; then
+            echo "PROFILE=rpi-4" >> $GITHUB_ENV
+            echo "TARGET_SYSTEM=bcm27xx/bcm2711" >> $GITHUB_ENV
+            echo "TARGET_NAME=bcm27xx-bcm2711" >> $GITHUB_ENV
+          fi
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip tar gzip
+
+      - name: Download and Extract ImageBuilder
+        run: |
+          BASE_URL=https://downloads.openwrt.org/releases
+          FILE_NAME=openwrt-imagebuilder-${{ env.BRANCH }}-${{ env.TARGET_NAME }}.Linux-x86_64.tar.xz
+          URL=$BASE_URL/${{ env.BRANCH }}/targets/${{ env.TARGET_SYSTEM }}/$FILE_NAME
+
+          wget -nv $URL
+          tar -xJf $FILE_NAME
+          rm -f $FILE_NAME
+          echo "IB_DIR=$(find . -maxdepth 1 -type d -name '*imagebuilder*')" >> $GITHUB_ENV
+
+      - name: Build Vanilla OpenWrt Image
+        run: |
+          cd $IB_DIR
+          make image PROFILE=${{ env.PROFILE }}
+
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-${{ env.TARGET_NAME }}-${{ env.BRANCH }}
+          path: ${{ env.IB_DIR }}/bin/targets/${{ env.TARGET_SYSTEM }}/*
