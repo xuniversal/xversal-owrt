@@ -16,10 +16,10 @@ nikki_file="nikki_${ARCH_3}-openwrt-${CURVER}"
 nikki_file_down=$(curl -s "${nikki_api}" | grep "browser_download_url" | grep -oE "https.*${nikki_file_down}.*.tar.gz" | head -n 1)
 
 # passwall
-passwall_api="https://api.github.com/repos/xiaorouji/openwrt-passwall/releases"
+passwall_api="https://api.github.com/repos/Openwrt-Passwall/openwrt-passwall/releases"
 passwall_file="passwall_packages_ipk_$ARCH_3.zip"
 passwall_file_down="$(curl -s ${passwall_api} | grep "browser_download_url" | grep -oE "https.*${passwall_file}" | head -n 1)"
-passwall_ipk="https://github.com/xiaorouji/openwrt-passwall/releases/download/25.7.15-1/luci-24.10_luci-app-passwall_25.7.15-r1_all.ipk"  
+passwall_ipk="https://github.com/Openwrt-Passwall/openwrt-passwall/releases/download/26.4.3-1/23.05-24.10_luci-app-passwall_26.4.3-r1_all.ipk"  
 
 if [ "$1" == "openclash" ]; then
     echo "Downloading Openclash packages"
